@@ -1,12 +1,30 @@
 {
   "name": "web_request",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
+  "version": "1.0.0",
+  "description": "Admin app",
+  "main": "app.js",
   "dependencies": {
-    "express": "3.2.6",
-    "ejs": "*"
-  }
+    "body-parser": "^1.18.2",
+    "bower": "^1.8.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.0"
+  },
+  "devDependencies": {
+    "raw-loader": "^0.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nano5/web_request.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nano5/web_request/issues"
+  },
+  "homepage": "https://github.com/nano5/web_request#readme"
 }
