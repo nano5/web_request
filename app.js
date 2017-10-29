@@ -9,6 +9,7 @@ const config = require('./webpack.config.js');
 const compiler = webpack(config);
 
 app.use(express.static(path.join(__dirname, 'bower_components')));
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser());

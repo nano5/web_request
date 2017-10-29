@@ -5,8 +5,10 @@ module.exports = {
 	entry: "./src/app.js",
 	output: {
 		path: __dirname,
-		filename: "bundle.js"
+		filename: "bundle.js",
+		sourceMapFilename: "bundle.map"
 	},
+	devtool: '#source-map',
 	module: {
 	    rules: [
 	      {

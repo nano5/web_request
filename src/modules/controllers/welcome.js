@@ -6,7 +6,9 @@ function WelcomeController(){}
 
 WelcomeController.prototype.index = function() {
 	var model = {name:"spiderman"};
-	var view = new welcome.View();
+	var view = new welcome.View({
+		
+	});
 	view.render(model);
 };
 
