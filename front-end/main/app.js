@@ -5,7 +5,7 @@ var Router = Backbone.Router.extend({
 	routes: {
 		"": "profile",
 		"profile": "profile",
-		"friends": "friends",
+		"people": "people",
 		"groups": "groups",
 		"messages": "messages",
 		"email": "email",
@@ -18,8 +18,8 @@ var router = new Router();
 router.on("route:profile", function() {
 	console.log("will render profile view");
 });
-router.on("route:friends", function() {
-	console.log("will render friends view");
+router.on("route:people", function() {
+	console.log("will render favorites view");
 });
 router.on("route:groups", function() {
 	console.log("will render groups view");
@@ -38,5 +38,5 @@ router.on("route:requests", function() {
 });
 
 var controller = require("./controller").default.controller;
-controller.index();
+controller.main();
 Backbone.history.start();

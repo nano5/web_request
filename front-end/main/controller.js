@@ -3,7 +3,7 @@ var view = require("./view");
 
 function Controller(){};
 
-Controller.prototype.index = function() {
+Controller.prototype.main = function() {
 	var main = new view.default.Main();
 	main.render(model.default.ApplicationState);
 };
