@@ -1,9 +1,10 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-import markup from "chat_rooms/partials/chat_room-page-template.htm"
-// grab a controller, and use it to render a sub page?
-var ChatRooms = Backbone.View.extend({
+
+import markup from "main/pages/email/partials/email-page-template.htm"
+
+var Email = Backbone.View.extend({
 	el: ".content",
 	render: function(Model) {
 		var model = new Model();
@@ -13,5 +14,5 @@ var ChatRooms = Backbone.View.extend({
 });
 
 export default {
-	ChatRooms:ChatRooms
+	Email:Email
 }

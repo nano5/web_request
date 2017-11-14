@@ -1,5 +1,5 @@
-var model = require("email/model");
-var view = require("email/view");
+var model = require("main/pages/email/model");
+var view = require("main/pages/email/view");
 
 var $ = require("jquery");
 var _ = require("underscore");

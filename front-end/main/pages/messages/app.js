@@ -1,4 +1,4 @@
-var controller = require("messages/controller").default.controller;
+var controller = require("main/pages/messages/controller").default.controller;
 
 function App(){};
 

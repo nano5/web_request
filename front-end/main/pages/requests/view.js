@@ -1,7 +1,7 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-import markup from "requests/partials/requests-page-template.htm"
+import markup from "main/pages/requests/partials/requests-page-template.htm"
 
 var Requests = Backbone.View.extend({
 	el: ".content",

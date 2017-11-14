@@ -1,5 +1,5 @@
-var model = require("requests/model");
-var view = require("requests/view");
+var model = require("main/pages/requests/model");
+var view = require("main/pages/requests/view");
 
 function Controller(){};
 

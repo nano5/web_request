@@ -1,5 +1,5 @@
-var model = require("profile/model");
-var view = require("profile/view");
+var model = require("main/pages/profile/model");
+var view = require("main/pages/profile/view");
 
 var $ = require("jquery");
 var _ = require("underscore");

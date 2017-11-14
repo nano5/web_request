@@ -1,7 +1,8 @@
-var controller = require("chat_rooms/controller").default.controller;
+var controller = require("main/pages/profile/controller").default.controller;
 function App(){};
+
 App.prototype.start = function() {
-	controller.chatRooms();
+	controller.profile();
 }
 
 var app = new App();

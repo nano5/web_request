@@ -1,9 +1,8 @@
-var controller = require("email/controller").default.controller;
-
+var controller = require("main/pages/people/controller").default.controller;
 function App(){};
 
 App.prototype.start = function() {
-	controller.email();
+	controller.people();
 }
 
 var app = new App();

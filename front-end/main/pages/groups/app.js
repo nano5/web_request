@@ -1,8 +1,9 @@
-var controller = require("people/controller").default.controller;
+var controller = require("main/pages/groups/controller").default.controller;
+
 function App(){};
 
 App.prototype.start = function() {
-	controller.people();
+	controller.groups();
 }
 
 var app = new App();

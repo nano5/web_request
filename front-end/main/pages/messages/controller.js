@@ -1,5 +1,5 @@
-var model = require("messages/model");
-var view = require("messages/view");
+var model = require("main/pages/messages/model");
+var view = require("main/pages/messages/view");
 
 function Controller(){};
 

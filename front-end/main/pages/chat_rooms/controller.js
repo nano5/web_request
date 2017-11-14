@@ -1,5 +1,5 @@
-var model = require("chat_rooms/model");
-var view = require("chat_rooms/view");
+var model = require("main/pages/chat_rooms/model");
+var view = require("main/pages/chat_rooms/view");
 
 var $ = require("jquery");
 var _ = require("underscore");

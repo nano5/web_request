@@ -1,9 +1,9 @@
-var controller = require("groups/controller").default.controller;
+var controller = require("main/pages/email/controller").default.controller;
 
 function App(){};
 
 App.prototype.start = function() {
-	controller.groups();
+	controller.email();
 }
 
 var app = new App();

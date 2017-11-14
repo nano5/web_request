@@ -1,5 +1,5 @@
-var model = require("people/model");
-var view = require("people/view");
+var model = require("main/pages/people/model");
+var view = require("main/pages/people/view");
 
 var $ = require("jquery");
 var _ = require("underscore");

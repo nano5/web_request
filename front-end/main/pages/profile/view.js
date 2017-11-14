@@ -1,9 +1,9 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-import markup from 'people/partials/people-page-template.htm'
+import markup from 'main/pages/profile/partials/profile-page-template.htm'
 
-var People = Backbone.View.extend({
+var Profile = Backbone.View.extend({
 	el: ".content",
 	render: function(Model) {
 		var model = new Model();
@@ -13,5 +13,5 @@ var People = Backbone.View.extend({
 });
 
 export default {
-	People:People
+	Profile:Profile
 }

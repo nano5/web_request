@@ -1,4 +1,4 @@
-var controller = require("requests/controller").default.controller;
+var controller = require("main/pages/requests/controller").default.controller;
 
 function App(){}
 

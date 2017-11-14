@@ -1,5 +1,5 @@
-var model = require("groups/model");
-var view = require("groups/view");
+var model = require("main/pages/groups/model");
+var view = require("main/pages/groups/view");
 
 function Controller(){};
 
