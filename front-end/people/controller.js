@@ -1,5 +1,5 @@
-var model = require("profile/model");
-var view = require("profile/view");
+var model = require("people/model");
+var view = require("people/view");
 
 var $ = require("jquery");
 var _ = require("underscore");
@@ -7,9 +7,9 @@ var Backbone = require("backbone");
 
 function Controller(){};
 
-Controller.prototype.profile = function() {
-	var profile = new view.default.Profile();
-	profile.render(model.default.Profile)
+Controller.prototype.people = function() {
+	var people = new view.default.People();
+	people.render(model.default.People);
 }
 
 var controller = new Controller();

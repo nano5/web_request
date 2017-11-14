@@ -2,8 +2,8 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 
-var Profile = Backbone.Model.extend({});
+var ChatRooms = Backbone.Model.extend({});
 
 export default {
-	Profile:Profile
+	ChatRooms:ChatRooms
 }

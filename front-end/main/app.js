@@ -1,6 +1,6 @@
-var $ = require("../../back-end/node_modules/jquery");
-var _ = require("../../back-end/node_modules/underscore");
-var Backbone = require("../../back-end/node_modules/backbone");
+var $ = require("jquery");
+var _ = require("underscore");
+var Backbone = require("backbone");
 var Router = Backbone.Router.extend({
 	routes: {
 		"": "profile",
@@ -14,12 +14,22 @@ var Router = Backbone.Router.extend({
 	}
 });
 
+
+
+var profileController = require("profile/controller").default.controller;
+var peopleController = require("people/controller").default.controller;
+var chatRoomController = require("chat_rooms/controller").default.controller;
+var mainController = require("main/controller").default.controller;
+mainController.main();
+
 var router = new Router();
 router.on("route:profile", function() {
 	console.log("will render profile view");
+	profileController.profile();
 });
 router.on("route:people", function() {
-	console.log("will render favorites view");
+	console.log("will render people view");
+	peopleController.people();
 });
 router.on("route:groups", function() {
 	console.log("will render groups view");
@@ -32,11 +42,10 @@ router.on("route:email", function() {
 });
 router.on("route:chatRooms", function() {
 	console.log("will render chatRooms view");
+	chatRoomController.chatRooms();
 });
 router.on("route:requests", function() {
 	console.log("will render requests view");
 });
 
-var controller = require("./controller").default.controller;
-controller.main();
 Backbone.history.start();

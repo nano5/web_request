@@ -1,4 +1,4 @@
-var Backbone = require("../../back-end/node_modules/backbone");
+var Backbone = require("backbone");
 var ApplicationState = Backbone.Model.extend({});
  export default {
 	ApplicationState:ApplicationState

@@ -1,5 +1,5 @@
-var model = require("./model");
-var view = require("./view");
+var model = require("main/model");
+var view = require("main/view");
 
 function Controller(){};
 

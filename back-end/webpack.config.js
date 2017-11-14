@@ -1,5 +1,5 @@
 const path = require('path');
-
+console.log(__dirname);
 module.exports = {
 	entry: "../front-end/main/app.js",
 	output: {
@@ -18,7 +18,8 @@ module.exports = {
 	  },
 	resolve: {
 		extensions: [".js", ".json"],
-		modules: [path.resolve(__dirname, "src/modules"),'node_modules', 'bower_components']
+		modules: [path.resolve(__dirname, "src/modules"),
+		path.resolve(__dirname, 'node_modules'), 'bower_components', path.resolve(__dirname,"../front-end")]
 	}
 };
 
