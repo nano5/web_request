@@ -1,10 +1,9 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
+import markup from "messages/partials/messages-page-template.htm"
 
-import markup from "email/partials/email-page-template.htm"
-
-var Email = Backbone.View.extend({
+var Messages = Backbone.View.extend({
 	el: ".content",
 	render: function(Model) {
 		var model = new Model();
@@ -14,5 +13,5 @@ var Email = Backbone.View.extend({
 });
 
 export default {
-	Email:Email
+	Messages:Messages
 }

@@ -18,8 +18,11 @@ var Router = Backbone.Router.extend({
 
 var profileApp = require("profile/app").default.app;
 var peopleApp = require("people/app").default.app;
-var chatRoomApp = require("chat_rooms/app").default.app;
+var chatRoomsApp = require("chat_rooms/app").default.app;
 var emailApp = require("email/app").default.app;
+var messagesApp = require("messages/app").default.app;
+var groupsApp = require("groups/app").default.app;
+var requestsApp = require("requests/app").default.app;
 var mainController = require("main/controller").default.controller;
 mainController.main();
 
@@ -34,9 +37,11 @@ router.on("route:people", function() {
 });
 router.on("route:groups", function() {
 	console.log("will render groups view");
+	groupsApp.start();
 });
 router.on("route:messages", function() {
 	console.log("will render messages view");
+	messagesApp.start();
 });
 router.on("route:email", function() {
 	console.log("will render email view");
@@ -44,10 +49,11 @@ router.on("route:email", function() {
 });
 router.on("route:chatRooms", function() {
 	console.log("will render chatRooms view");
-	chatRoomApp.start();
+	chatRoomsApp.start();
 });
 router.on("route:requests", function() {
 	console.log("will render requests view");
+	requestsApp.start();
 });
 
 Backbone.history.start();
