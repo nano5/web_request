@@ -34,25 +34,16 @@
       <div class="navbar navbar-default" role="navigation">
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#/profile">Profile</a></li>
-            <li><a href="#/people">People</a></li>
-           	<li><a href="#/groups">Groups</a></li>
-            <li><a href="#/messages">Messages</a></li>
-            <li><a href="#/email">Email</a></li>
-            <li><a href="#/chat_rooms">Chat Rooms</a></li>
-            <li><a href="#/requests">Requests</a></li>
+            <li id="menu-profile"><a href="#/profile">Profile</a></li>
+            <li id="menu-people"><a href="#/people" >People</a></li>
+           	<li id="menu-groups"><a href="#/groups" >Groups</a></li>
+            <li id="menu-messages"><a href="#/messages" >Messages</a></li>
+            <li id="menu-email"><a href="#/email" >Email</a></li>
+            <li id="menu-chat_rooms"><a href="#/chat_rooms" >Chat Rooms</a></li>
+            <li id="menu-requests"><a href="#/requests" >Requests</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 </div>
-
-<script type="text/javascript">
-  $("li").click(function() {
-    $(".active").toggleClass("active");
-    if(!$(this).hasClass("active")) {
-      $(this).toggleClass("active");
-    }
-  });
-</script>
 </html>

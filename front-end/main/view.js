@@ -5,6 +5,9 @@ import markup from 'main/partials/main-page-template.htm';
 
 var Main = Backbone.View.extend({
 	el : ".left-menu",
+	initialize: function(options) {
+		this.options = options;
+	},
 	render: function(Model) {
 		// going to get application state
 		// then depending on the state
