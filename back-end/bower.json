@@ -1,0 +1,15 @@
+{
+  "name": "web_request",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "Christiano Contreas <nanomay94@utexas.edu>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/nano5/web_request",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1"
+  }
+}
