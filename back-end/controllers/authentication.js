@@ -18,26 +18,18 @@ Controller.prototype.post_signup = function(req, res) {
 	var _email = req.body.email;
 	var _username = req.body.username;
 	var _password = req.body.password;
-	// at this point need to check if the username is taken.
-
-	//req.check("email", "invalid email").isEmail();
+	req.check("email", "invalid email").isEmail();
 	req.check("password", "invalid password").isLength({min: 4});
 	var count = User.count({username: _username}, function(err, c) {
 		if (c === 0) {
 			var errors = req.validationErrors();
 			if (errors) {
-				// at this point need to redirect to the signup page, 
-				// maybe send a message
-				console.log("have errors");
+				console.log("have errors password/email errors");
 				console.log(errors);
+				res.send(400);
 			} else {
-				// at this point need to set signedIn to true
-				// and redirect to the root /, where the 
-				// back-end will send over the frontend,
-				// application
 				bcrypt.genSalt(10, function(err, salt) {
 		    		bcrypt.hash(_password, salt, function(err, hash) {
-		        	// Store hash in your password DB.
 		        		if (err) {
 		        			console.log(err);
 		        		} else {
@@ -49,7 +41,6 @@ Controller.prototype.post_signup = function(req, res) {
 								username: _username,
 								hashedPassword: _hashedPassword
 							});
-							// say the user has signed in
 							user.save(function(err) {
 		      					if(err){
 		           					console.log(err);
@@ -61,6 +52,7 @@ Controller.prototype.post_signup = function(req, res) {
 				});
 			}
 		} else {
+			res.send(400);
 			console.log("username is taken");
 		}
 	});
@@ -74,19 +66,20 @@ Controller.prototype.post_login = function(req, res) {
 	User.findOne({username: _username}, "hashedPassword", function(err, user) {
 		if (err) {
 			console.log(err);
-
+			res.send(400);
 		} else {
 			bcrypt.compare(_password, user.hashedPassword, function(err, res) {
 				if (res === true) {
 					console.log("you are now logged in");
+					req.session.loggedIn = true;
 				} else {
 					console.log("wrong password");
+					res.send(400);
 				}
 			});
 		}
 	});
 	res.end();
-
 }
 
 var _controller = new Controller();
