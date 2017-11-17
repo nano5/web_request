@@ -1,10 +1,12 @@
 const path = require('path');
 console.log(__dirname);
 module.exports = {
-	entry: "../front-end/main/app.js",
+	entry: { 
+		main: "../front-end/main/app.js"
+	},
 	output: {
 		path: __dirname,
-		filename: "bundle.js",
+		filename: "[name].bundle.js",
 		sourceMapFilename: "bundle.map"
 	},
 	devtool: '#source-map',

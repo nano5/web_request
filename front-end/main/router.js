@@ -4,7 +4,7 @@ var Backbone = require("backbone");
 var mainController = require("main/controller").default.controller;
 
 var profileApp = require("main/pages/profile/app").default.app;
-var peopleApp = hrequire("main/pages/people/app").default.app;
+var peopleApp = require("main/pages/people/app").default.app;
 var chatRoomsApp = require("main/pages/chat_rooms/app").default.app;
 var emailApp = require("main/pages/email/app").default.app;
 var messagesApp = require("main/pages/messages/app").default.app;

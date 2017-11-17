@@ -1,0 +1,7 @@
+db.createUser({
+	user:"client",
+	pwd:"password",
+	roles: [
+		{role: "readWrite", db: "web_requestdb"}
+	]	
+})
