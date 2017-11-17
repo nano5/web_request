@@ -19,54 +19,73 @@ Controller.prototype.post_signup = function(req, res) {
 	var _username = req.body.username;
 	var _password = req.body.password;
 	// at this point need to check if the username is taken.
+
 	//req.check("email", "invalid email").isEmail();
 	req.check("password", "invalid password").isLength({min: 4});
-	var errors = req.validationErrors();
-	if (errors) {
-		// at this point need to redirect to the signup page, 
-		// maybe send a message
-		console.log("have errors");
-		console.log(errors);
-	} else {
-		// at this point need to set signedIn to true
-		// and redirect to the root /, where the 
-		// back-end will send over the frontend,
-		// application
-		bcrypt.genSalt(10, function(err, salt) {
-    		bcrypt.hash(_password, salt, function(err, hash) {
-        	// Store hash in your password DB.
-        		if (err) {
-        			console.log(err);
-        		} else {
-        			var _hashedPassword = hash;
-        			var user = new User({
-						first_name: _first_name,
-						last_name: _last_name,
-						email: _email,
-						username: _username,
-						hashedPassword: _hashedPassword
-					});
-		// say the user has signed in
-					user.save(function(err) {
-      					if(err){
-           					console.log(err);
-           					return;
-      					}
-					});
-        		}
-    		});
-		});
-	}
+	var count = User.count({username: _username}, function(err, c) {
+		if (c === 0) {
+			var errors = req.validationErrors();
+			if (errors) {
+				// at this point need to redirect to the signup page, 
+				// maybe send a message
+				console.log("have errors");
+				console.log(errors);
+			} else {
+				// at this point need to set signedIn to true
+				// and redirect to the root /, where the 
+				// back-end will send over the frontend,
+				// application
+				bcrypt.genSalt(10, function(err, salt) {
+		    		bcrypt.hash(_password, salt, function(err, hash) {
+		        	// Store hash in your password DB.
+		        		if (err) {
+		        			console.log(err);
+		        		} else {
+		        			var _hashedPassword = hash;
+		        			var user = new User({
+								first_name: _first_name,
+								last_name: _last_name,
+								email: _email,
+								username: _username,
+								hashedPassword: _hashedPassword
+							});
+							// say the user has signed in
+							user.save(function(err) {
+		      					if(err){
+		           					console.log(err);
+		           					return;
+		      					}
+							});
+		        		}
+		    		});
+				});
+			}
+		} else {
+			console.log("username is taken");
+		}
+	});
+	
 	res.end();
 }
 
 Controller.prototype.post_login = function(req, res) {
-	var username = req.username;
-	var password = req.password;
+	var _username = req.body.username;
+	var _password = req.body.password;
+	User.findOne({username: _username}, "hashedPassword", function(err, user) {
+		if (err) {
+			console.log(err);
 
-	// at this point need to connect to the database and try to get
-	// the username, take the password, hash it with bycrypt, 
-	// and make sure it matches with the password in the database
+		} else {
+			bcrypt.compare(_password, user.hashedPassword, function(err, res) {
+				if (res === true) {
+					console.log("you are now logged in");
+				} else {
+					console.log("wrong password");
+				}
+			});
+		}
+	});
+	res.end();
 
 }
 
