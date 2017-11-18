@@ -10,7 +10,6 @@ Controller.prototype.get_authenticate = function(req, res) {
 		res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
 	} else {
 		res.sendFile(path.join(__dirname + "/../../front-end/authentication/view.html"));
-		//res.redirect("localhost:8080/#/login");
 	}
 }
 
@@ -29,7 +28,8 @@ Controller.prototype.post_signup = function(req, res) {
 			if (errors) {
 				console.log("have errors password/email errors");
 				console.log(errors);
-				res.send(400);
+				res.sendStatus(400);
+				res.end();
 			} else {
 				bcrypt.genSalt(10, function(err, salt) {
 		    		bcrypt.hash(_password, salt, function(err, hash) {
@@ -50,17 +50,22 @@ Controller.prototype.post_signup = function(req, res) {
 		           					return;
 		      					}
 							});
+							var jsonReply = {redirect: "http://localhost:8080/"};
+							req.session.loggedIn = true;
+							res.setHeader("Content-Type", "application/json");
+							res.send(JSON.stringify(jsonReply));
+							res.end();
 		        		}
 		    		});
 				});
 			}
 		} else {
-			res.send(400);
+			res.sendStatus(400);
+			res.end();
 			console.log("username is taken");
 		}
 	});
 	
-	res.end();
 }
 
 Controller.prototype.post_login = function(req, res) {
@@ -78,11 +83,10 @@ Controller.prototype.post_login = function(req, res) {
 					if (result === true) {
 						console.log("you are now logged in");
 						req.session.loggedIn = true;
-						// need to redirect
-						//res.redirect("http://localhost:8080/");
-						//res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
-						//res.sendStatus(200);
-						res.send({});
+						var jsonReply = {redirect: "http://localhost:8080/"};
+						res.setHeader("Content-Type", "application/json");
+						res.send(JSON.stringify(jsonReply));
+						res.end();
 					} else {
 						console.log("wrong password");
 						res.sendStatus(400);

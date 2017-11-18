@@ -2,6 +2,7 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 var loginApp = require("authentication/pages/login/app").default.app;
+var signupApp = require("authentication/pages/signup/app").default.app;
 
 var Router = Backbone.Router.extend({
 	routes: {
@@ -11,10 +12,11 @@ var Router = Backbone.Router.extend({
 	},
 	signup: function() {
 		console.log("will render signup view");
+		signupApp.start();
 	},
 	login: function() {
 		console.log("will render login view");
-		loginApp.start(this);
+		loginApp.start();
 	},
 	redirectToLogin: function() {
 		console.log("redirecting to login screen");

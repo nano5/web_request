@@ -24,9 +24,6 @@ $.fn.serializeObject = function() {
 
 var Login = Backbone.View.extend({
 	el: ".content",
-	initialize: function(options) {
-		this.options = options;
-	},
 	render: function() {
 		var template = _.template(markup);
 		this.$el.html(template({}));
@@ -37,18 +34,19 @@ var Login = Backbone.View.extend({
 	loginUser: function(ev) {
 		var userData = $(ev.currentTarget).serializeObject();
 		var user = new User(userData);
-		var thisView = this;
+		//var thisView = this;
 		user.save(null, {
-			success: function() {
-				console.log("saved user");
-				window.location.replace("http://localhost:8080/");
+			success: function(res) {
+				console.log(res);
+				console.log("logged in user.");
+				window.location.replace(res.attributes.redirect);
+				//thisView.options.router.navigate("", {trigger: true});
 			},
 			error: function() {
-				console.log("did not save user");
-				alert("wrong username or password");
+				console.log("did not login user");
+				alert("Wrong username or password.");
 			}
 		});
-		console.log("trying to log in user")
 		return false;
 	}
 });
