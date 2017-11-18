@@ -1,13 +1,15 @@
 var User = require("../models/user").User;
 var bcrypt = require("bcrypt");
+var path = require("path");
 
 function Controller(){};
 
 Controller.prototype.get_authenticate = function(req, res) {
 	if(req.session.signedIn === true) {
-		res.sendFile(path.join(__dirname + "/../front-end/main/view.html"));
+		res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
 	} else {
-		// at this point send the login/signup application
+		res.sendFile(path.join(__dirname + "/../../front-end/authentication/view.html"));
+		//res.redirect("localhost:8080/#/login");
 	}
 }
 

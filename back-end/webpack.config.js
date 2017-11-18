@@ -1,8 +1,8 @@
 const path = require('path');
-console.log(__dirname);
 module.exports = {
 	entry: { 
-		main: "../front-end/main/app.js"
+		main: "../front-end/main/app.js",
+		authentication: "../front-end/authentication/app.js"
 	},
 	output: {
 		path: __dirname,

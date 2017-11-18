@@ -1,5 +1,4 @@
 var mainController = require("main/controller").default.controller;
-var Router = require("main/router").default.Router;
-var mainRouter = new Router();
+var mainRouter = require("main/router").default.router;
 mainController.main();
 Backbone.history.start();

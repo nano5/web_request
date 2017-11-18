@@ -1,22 +1,21 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="../../../../../back-end/bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
 		<style>
 			.form-padding {
-				padding: 50px
+				padding-left: 20px;
+				width: 400px;
 			}
+
 		</style>
 	</head>
 	<body>
-		<form class="form-padding">
-		  <div class="form-group">
-		    <label >Email address</label>
-		    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
-		  </div>
-		  <div class="form-group">
+		<h1>Login</h1>
+		<form class="login-form form-padding">
+		    <label>Username</label>
+		    <input type="text" class="form-control" placeholder="Enter username" name="username">
 		    <label>Password</label>
-		    <input type="password" class="form-control" placeholder="Password">
-		  </div>
+		    <input type="password" class="form-control" placeholder="Enter password" name="password">
 		  <button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 	</body>
