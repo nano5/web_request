@@ -3,8 +3,8 @@ var view = require("authentication/pages/login/view");
 
 function Controller(){};
 
-Controller.prototype.login = function() {
-	var login = new view.default.Login();
+Controller.prototype.login = function(_router) {
+	var login = new view.default.Login({router: _router});
 	login.render();
 }
 

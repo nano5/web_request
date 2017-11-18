@@ -5,7 +5,8 @@ var path = require("path");
 function Controller(){};
 
 Controller.prototype.get_authenticate = function(req, res) {
-	if(req.session.signedIn === true) {
+	//req.session.loggedIn = false;
+	if(req.session.loggedIn === true) {
 		res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
 	} else {
 		res.sendFile(path.join(__dirname + "/../../front-end/authentication/view.html"));
@@ -67,26 +68,33 @@ Controller.prototype.post_login = function(req, res) {
 	var _password = req.body.password;
 	User.findOne({username: _username}, "hashedPassword", function(err, user) {
 		if (err) {
+			console.log("send");
 			console.log(err);
 			res.sendStatus(400);
+			res.end();
 		} else {
 			if (user) {
-			bcrypt.compare(_password, user.hashedPassword, function(err, res) {
-					if (res === true) {
+			bcrypt.compare(_password, user.hashedPassword, function(err, result) {
+					if (result === true) {
 						console.log("you are now logged in");
 						req.session.loggedIn = true;
-						res.sendStatus(200);
+						// need to redirect
+						//res.redirect("http://localhost:8080/");
+						//res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
+						//res.sendStatus(200);
+						res.send({});
 					} else {
 						console.log("wrong password");
 						res.sendStatus(400);
 					}
+					res.end();  
 				});
 			} else {
 				console.log("could not find user");
 				res.sendStatus(400);
+				res.end();  
 			}
 		}
-	res.end();
 	});
 }
 

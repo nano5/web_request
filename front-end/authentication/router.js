@@ -14,7 +14,7 @@ var Router = Backbone.Router.extend({
 	},
 	login: function() {
 		console.log("will render login view");
-		loginApp.start();
+		loginApp.start(this);
 	},
 	redirectToLogin: function() {
 		console.log("redirecting to login screen");

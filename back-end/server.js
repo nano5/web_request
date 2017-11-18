@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
-app.use(expressSession({ cookie: {maxAge: 60000}, secret:"foobar", saveUninitialized: false, resave: false, store: new MongoStore({
+app.use(expressSession({ cookie: {maxAge: 3600000}, secret:"foobar", saveUninitialized: false, resave: false, store: new MongoStore({
         host: '127.0.0.1',
         port: '27017',
         db: 'session',

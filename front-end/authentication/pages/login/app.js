@@ -2,8 +2,8 @@ var controller = require("authentication/pages/login/controller").default.contro
 
 function App(){};
 
-App.prototype.start = function() {
-	controller.login();
+App.prototype.start = function(router) {
+	controller.login(router);
 }
 
 var app = new App();
