@@ -2,8 +2,10 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 
-var Login = Backbone.Model.extend({});
+var User = Backbone.Model.extend({
+	url: "http://localhost:8080/login"
+});
 
 export default {
-	Login: Login
+	User: User
 }

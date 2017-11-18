@@ -5,7 +5,7 @@ function Controller(){};
 
 Controller.prototype.login = function() {
 	var login = new view.default.Login();
-	login.render(model.default.Login);
+	login.render();
 }
 
 var _controller = new Controller();

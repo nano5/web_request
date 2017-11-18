@@ -68,20 +68,26 @@ Controller.prototype.post_login = function(req, res) {
 	User.findOne({username: _username}, "hashedPassword", function(err, user) {
 		if (err) {
 			console.log(err);
-			res.send(400);
+			res.sendStatus(400);
 		} else {
+			if (user) {
 			bcrypt.compare(_password, user.hashedPassword, function(err, res) {
-				if (res === true) {
-					console.log("you are now logged in");
-					req.session.loggedIn = true;
-				} else {
-					console.log("wrong password");
-					res.send(400);
-				}
-			});
+					if (res === true) {
+						console.log("you are now logged in");
+						req.session.loggedIn = true;
+						res.sendStatus(200);
+					} else {
+						console.log("wrong password");
+						res.sendStatus(400);
+					}
+				});
+			} else {
+				console.log("could not find user");
+				res.sendStatus(400);
+			}
 		}
-	});
 	res.end();
+	});
 }
 
 var _controller = new Controller();
