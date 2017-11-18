@@ -1,7 +1,7 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-var User = require("authentication/pages/login/model").default.User;
+//var User = require("authentication/pages/login/model").default.User;
 // console.log(require("authentication/router"));
 
 import markup from "authentication/pages/login/partials/login-page-template.htm"
@@ -24,6 +24,9 @@ $.fn.serializeObject = function() {
 
 var Login = Backbone.View.extend({
 	el: ".content",
+	initialize: function(options) {
+		this.options = options;
+	},
 	render: function() {
 		var template = _.template(markup);
 		this.$el.html(template({}));
@@ -33,7 +36,7 @@ var Login = Backbone.View.extend({
 	},
 	loginUser: function(ev) {
 		var userData = $(ev.currentTarget).serializeObject();
-		var user = new User(userData);
+		var user = new this.options.User(userData);
 		//var thisView = this;
 		user.save(null, {
 			success: function(res) {

@@ -4,7 +4,7 @@ var view = require("authentication/pages/login/view");
 function Controller(){};
 
 Controller.prototype.login = function() {
-	var login = new view.default.Login();
+	var login = new view.default.Login({User: model.default.User});
 	login.render();
 }
 
