@@ -1,8 +1,6 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-//var User = require("authentication/pages/login/model").default.User;
-// console.log(require("authentication/router"));
 
 import markup from "authentication/pages/login/partials/login-page-template.htm"
 
@@ -37,17 +35,14 @@ var Login = Backbone.View.extend({
 	loginUser: function(ev) {
 		var userData = $(ev.currentTarget).serializeObject();
 		var user = new this.options.User(userData);
-		//var thisView = this;
 		user.save(null, {
 			success: function(res) {
-				console.log(res);
 				console.log("logged in user.");
-				window.location.replace(res.attributes.redirect);
-				//thisView.options.router.navigate("", {trigger: true});
-			},
-			error: function() {
-				console.log("did not login user");
-				alert("Wrong username or password.");
+				if (res.attributes.redirect) {
+					window.location.replace(res.attributes.redirect);
+				} else {
+					alert(res.attributes.error);
+				}	
 			}
 		});
 		return false;

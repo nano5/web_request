@@ -20,6 +20,10 @@ Controller.prototype.post_signup = function(req, res) {
 	var _email = req.body.email;
 	var _username = req.body.username;
 	var _password = req.body.password;
+	if (!_first_name || !_last_name || !_email || 
+		!_username || !_password) {
+		// at this point handle the fact that the form was not filled out
+	}
 	req.check("email", "invalid email").isEmail();
 	req.check("password", "invalid password").isLength({min: 4});
 	var count = User.count({username: _username}, function(err, c) {
@@ -28,7 +32,9 @@ Controller.prototype.post_signup = function(req, res) {
 			if (errors) {
 				console.log("have errors password/email errors");
 				console.log(errors);
-				res.sendStatus(400);
+				res.setHeader("Content-Type", "application/json");
+				var JSONreply = {error: "Invalid password/email"};
+				res.send(JSON.stringify(JSONreply));
 				res.end();
 			} else {
 				bcrypt.genSalt(10, function(err, salt) {
@@ -47,20 +53,28 @@ Controller.prototype.post_signup = function(req, res) {
 							user.save(function(err) {
 		      					if(err){
 		           					console.log(err);
+		           					console.log("data base is disconnected")
+		           					res.setHeader("Content-Type", "application/json");
+									var jsonReply = {error: "Database is disconnected"};
+									res.send(JSON.stringify(jsonReply));
+									res.end();
 		           					return;
+		      					} else {
+		      						req.session.loggedIn = true;
+									res.setHeader("Content-Type", "application/json");
+									var jsonReply = {redirect: "http://localhost:8080/"};
+									res.send(JSON.stringify(jsonReply));
+									res.end();
 		      					}
 							});
-							var jsonReply = {redirect: "http://localhost:8080/"};
-							req.session.loggedIn = true;
-							res.setHeader("Content-Type", "application/json");
-							res.send(JSON.stringify(jsonReply));
-							res.end();
 		        		}
 		    		});
 				});
 			}
 		} else {
-			res.sendStatus(400);
+			res.setHeader("Content-Type", "application/json");
+			var jsonReply = {error: "Username is taken."};
+			res.send(JSON.stringify(jsonReply));
 			res.end();
 			console.log("username is taken");
 		}
@@ -75,7 +89,9 @@ Controller.prototype.post_login = function(req, res) {
 		if (err) {
 			console.log("send");
 			console.log(err);
-			res.sendStatus(400);
+			res.setHeader("Content-Type", "application/json");
+			var jsonReply = {error: "Could not find username/password"};
+			res.send(JSON.stringify(jsonReply));
 			res.end();
 		} else {
 			if (user) {
@@ -83,19 +99,22 @@ Controller.prototype.post_login = function(req, res) {
 					if (result === true) {
 						console.log("you are now logged in");
 						req.session.loggedIn = true;
-						var jsonReply = {redirect: "http://localhost:8080/"};
 						res.setHeader("Content-Type", "application/json");
+						var jsonReply = {redirect: "http://localhost:8080/"};
 						res.send(JSON.stringify(jsonReply));
 						res.end();
 					} else {
 						console.log("wrong password");
-						res.sendStatus(400);
-					}
-					res.end();  
+						res.setHeader("Content-Type", "application/json");
+						var jsonReply = {error: "Could not find username/password"};
+						res.send(JSON.stringify(jsonReply));					}
+						res.end();  
 				});
 			} else {
 				console.log("could not find user");
-				res.sendStatus(400);
+				res.setHeader("Content-Type", "application/json");
+				var jsonReply = {error: "Could not find username/password"};
+				res.send(JSON.stringify(jsonReply));
 				res.end();  
 			}
 		}

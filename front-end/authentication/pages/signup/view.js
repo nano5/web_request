@@ -7,6 +7,9 @@ import markup from "authentication/pages/signup/partials/signup-page-template.ht
 
 var Signup = Backbone.View.extend({
 	el: ".content",
+	initialize: function(options) {
+		this.options = options
+	},
 	render: function() {
 		var template = _.template(markup);
 		this.$el.html(template({}));
@@ -16,14 +19,15 @@ var Signup = Backbone.View.extend({
 	},
 	signupUser: function(ev) {
 		var userData = $(ev.currentTarget).serializeObject();
-		var user = new User(userData);
+		var user = new this.options.User(userData);
 		user.save(null,{
 			success: function(res) {
-				console.log("user signed up")
-				window.location.replace(res.attributes.redirect);
-			},
-			error: function() {
-				alert("username is taken or password is to short,must be at least 4 characters");
+				if (res.attributes.redirect) {
+					console.log("user signed up");
+					window.location.replace(res.attributes.redirect);
+				} else {
+					alert(res.attributes.error);
+				}
 			}
 		});
 		return false;
