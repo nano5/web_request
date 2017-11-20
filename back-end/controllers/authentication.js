@@ -22,63 +22,67 @@ Controller.prototype.post_signup = function(req, res) {
 	var _password = req.body.password;
 	if (!_first_name || !_last_name || !_email || 
 		!_username || !_password) {
-		// at this point handle the fact that the form was not filled out
+		res.setHeader("Content-Type", "application/json");
+		var JSONreply = {error: "Please fill out the whole form."};
+		res.send(JSON.stringify(JSONreply));
 	}
-	req.check("email", "invalid email").isEmail();
-	req.check("password", "invalid password").isLength({min: 4});
-	var count = User.count({username: _username}, function(err, c) {
-		if (c === 0) {
-			var errors = req.validationErrors();
-			if (errors) {
-				console.log("have errors password/email errors");
-				console.log(errors);
-				res.setHeader("Content-Type", "application/json");
-				var JSONreply = {error: "Invalid password/email"};
-				res.send(JSON.stringify(JSONreply));
-				res.end();
+	else {
+		req.check("email", "invalid email").isEmail();
+		req.check("password", "invalid password").isLength({min: 4});
+		var count = User.count({username: _username}, function(err, c) {
+			if (c === 0) {
+				var errors = req.validationErrors();
+				if (errors) {
+					console.log("have errors password/email errors");
+					console.log(errors);
+					res.setHeader("Content-Type", "application/json");
+					var JSONreply = {error: "Invalid password/email"};
+					res.send(JSON.stringify(JSONreply));
+					res.end();
+				} else {
+					bcrypt.genSalt(10, function(err, salt) {
+			    		bcrypt.hash(_password, salt, function(err, hash) {
+			        		if (err) {
+			        			console.log(err);
+			        		} else {
+			        			var _hashedPassword = hash;
+			        			var user = new User({
+									first_name: _first_name,
+									last_name: _last_name,
+									email: _email,
+									username: _username,
+									hashedPassword: _hashedPassword
+								});
+								user.save(function(err) {
+			      					if(err){
+			           					console.log(err);
+			           					console.log("data base is disconnected")
+			           					res.setHeader("Content-Type", "application/json");
+										var jsonReply = {error: "Database is disconnected"};
+										res.send(JSON.stringify(jsonReply));
+										res.end();
+			      					} else {
+			      						req.session.loggedIn = true;
+										res.setHeader("Content-Type", "application/json");
+										var jsonReply = {redirect: "http://localhost:8080/"};
+										res.send(JSON.stringify(jsonReply));
+										res.end();
+			      					}
+			      					return;
+								});
+			        		}
+			    		});
+					});
+				}
 			} else {
-				bcrypt.genSalt(10, function(err, salt) {
-		    		bcrypt.hash(_password, salt, function(err, hash) {
-		        		if (err) {
-		        			console.log(err);
-		        		} else {
-		        			var _hashedPassword = hash;
-		        			var user = new User({
-								first_name: _first_name,
-								last_name: _last_name,
-								email: _email,
-								username: _username,
-								hashedPassword: _hashedPassword
-							});
-							user.save(function(err) {
-		      					if(err){
-		           					console.log(err);
-		           					console.log("data base is disconnected")
-		           					res.setHeader("Content-Type", "application/json");
-									var jsonReply = {error: "Database is disconnected"};
-									res.send(JSON.stringify(jsonReply));
-									res.end();
-		           					return;
-		      					} else {
-		      						req.session.loggedIn = true;
-									res.setHeader("Content-Type", "application/json");
-									var jsonReply = {redirect: "http://localhost:8080/"};
-									res.send(JSON.stringify(jsonReply));
-									res.end();
-		      					}
-							});
-		        		}
-		    		});
-				});
+				res.setHeader("Content-Type", "application/json");
+				var jsonReply = {error: "Username is taken."};
+				res.send(JSON.stringify(jsonReply));
+				res.end();
+				console.log("username is taken");
 			}
-		} else {
-			res.setHeader("Content-Type", "application/json");
-			var jsonReply = {error: "Username is taken."};
-			res.send(JSON.stringify(jsonReply));
-			res.end();
-			console.log("username is taken");
-		}
-	});
+		});
+	}
 	
 }
 
