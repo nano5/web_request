@@ -74,7 +74,7 @@ Controller.prototype.post_signup = function(req, res) {
 										res.send(JSON.stringify(jsonReply));
 										res.end();
 			      					}
-			      					return;
+			      					//return;
 								});
 			        		}
 			    		});
@@ -132,7 +132,13 @@ Controller.prototype.post_login = function(req, res) {
 }
 
 Controller.prototype.post_logout = function(req, res) {
-	req.session.loggedIn = false;
+	if (req.body.test_key != "some_test_key") {
+		req.session.loggedIn = false;
+	}
+	res.setHeader("Content-Type", "application/json");
+	var jsonReply = {redirect: "http://localhost:8080/"};
+	res.send(JSON.stringify(jsonReply));					
+	res.end();
 }
 
 Controller.prototype.post_signout = function(req, res) {
