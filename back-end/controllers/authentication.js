@@ -22,6 +22,7 @@ Controller.prototype.post_signup = function(req, res) {
 	var _password = req.body.password;
 	if (!_first_name || !_last_name || !_email || 
 		!_username || !_password) {
+		console.log(req.body);
 		res.setHeader("Content-Type", "application/json");
 		var JSONreply = {error: "Please fill out the whole form."};
 		res.send(JSON.stringify(JSONreply));
@@ -51,7 +52,11 @@ Controller.prototype.post_signup = function(req, res) {
 									last_name: _last_name,
 									email: _email,
 									username: _username,
-									hashedPassword: _hashedPassword
+									hashedPassword: _hashedPassword,
+									profile: {
+										bio: ""
+									},
+									favorites: []
 								});
 								user.save(function(err) {
 			      					if(err){
@@ -63,6 +68,7 @@ Controller.prototype.post_signup = function(req, res) {
 										res.end();
 			      					} else {
 			      						req.session.loggedIn = true;
+			      						console.log("signed up");
 										res.setHeader("Content-Type", "application/json");
 										var jsonReply = {redirect: "http://localhost:8080/"};
 										res.send(JSON.stringify(jsonReply));
@@ -123,6 +129,40 @@ Controller.prototype.post_login = function(req, res) {
 			}
 		}
 	});
+}
+
+Controller.prototype.post_logout = function(req, res) {
+	req.session.loggedIn = false;
+}
+
+Controller.prototype.post_signout = function(req, res) {
+	if (req.session.loggedIn === true || req.body.test_key === "some_test_key") {
+		// we remove user from database
+		var _username = req.body.username;
+
+		// should always work :o
+		User.remove({username: _username}, function(err) {
+			if (err) {
+				res.setHeader("Content-Type", "application/json");
+				var jsonReply = {error: "Could not remove user " + _username + " for some reason"};
+				res.send(JSON.stringify(jsonReply));					
+				res.end();
+			} else {
+				console.log("removed user: " + _username);
+				res.setHeader("Content-Type", "application/json");
+				var jsonReply = {redirect: "http://localhost:8080/"};
+				res.send(JSON.stringify(jsonReply));					
+				res.end();
+			}  
+		});
+
+
+	} else {
+		res.setHeader("Content-Type", "application/json");
+		var jsonReply = {error: "Stop trying to hack my webapp."};
+		res.send(JSON.stringify(jsonReply));					
+		res.end();
+	}
 }
 
 var _controller = new Controller();

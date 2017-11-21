@@ -12,7 +12,11 @@ var userSchema = new mongoose.Schema({
 	last_name: String,
 	email: String,
 	username: String,
-	hashedPassword: String
+	hashedPassword: String,
+	profile: {
+		bio: String
+	},
+	favorites: [Number]
 }, {collection: "users"});
 
 var _User = mongoose.model("user", userSchema, "users");
