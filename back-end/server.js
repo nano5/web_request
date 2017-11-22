@@ -4,12 +4,14 @@ var expressSession = require("express-session");
 var MongoStore = require("connect-mongo")(expressSession);
 var bcrypt = require("bcrypt");
 var bodyParser = require("body-parser");
+var comet = require("comet.io");
 var path = require('path');
 var http = require("http");
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var authenticationRouter = require("./routes/authentication").authenticationRouter;
 var app = express();
+global.base_url = "http://localhost:8080/";
 
 app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(bodyParser.json());
@@ -21,7 +23,7 @@ app.use(expressSession({ cookie: {maxAge: 3600000}, secret:"foobar", saveUniniti
         db: 'session',
         url: 'mongodb://client:password@localhost:27017/web_requestdb'
     })}));
-//app.use(expressSession({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
+
 var config = require('./webpack.config.js');
 var compiler = webpack(config);
 
@@ -31,32 +33,12 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: '/'
 }));
 
-// // at this point I need to figure out if I should send the main app or the login app thing
-
-// app.get("/", function(req, res, next) {
-//   var sess = req.session
-//   if (sess.views) {
-//     sess.views++
-//     res.setHeader('Content-Type', 'text/html')
-//     res.write('<p>views: ' + sess.views + '</p>')
-//     res.write('<p>expires in: ' + (sess.cookie.maxAge / 1000) + 's</p>')
-//     res.end()
-//   } else {
-//     sess.views = 1
-//     res.end('welcome to the session demo. refresh!')
-//   }
-// });
-
-// app.get("/", function(req, res, next) {
-// 	console.log(req.session.signedIn);
-// 	req.session.signedIn = true;
-// 	res.end();
-// });
-
-// app.get("/", function(req, res) {
-// 	res.sendFile(path.join(__dirname + "/../front-end/main/view.html"));
-// });
 app.use(authenticationRouter);
+
+
+// at this point use comet
+
+
 
 var httpServer = http.createServer(app);
 httpServer.listen(8080);

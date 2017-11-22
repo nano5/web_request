@@ -29,12 +29,14 @@ describe("POST /signup and /signout", function() {
 		function(error, response, body) {
 			assert.equal(200, response.statusCode);
 			assert.equal(response.body.redirect, base_url);
+			var cookie = response.headers['set-cookie'].pop().split(';')[0];
+			console.log(cookie);
 			var signoutJSON = {
-				"username": "test",
-				"test_key": "some_test_key"
+				"password": "password"
 			};
 			request.post({
 				uri: base_url + "signout",
+				headers: {Cookie: cookie},
 				method: "POST",
 				json: signoutJSON
 			},
@@ -62,6 +64,7 @@ describe("POST /login and /logout", function () {
   			json: signupJSON
 		},
 		function(error, response, body) {
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
 			assert.equal(200, response.statusCode);
 			assert.equal(response.body.redirect, base_url);
 			var loginJSON = {
@@ -76,12 +79,13 @@ describe("POST /login and /logout", function () {
 			function(error, response, body) {
 				assert.equal(200, response.statusCode);
 				assert.equal(response.body.redirect, base_url);
+				var loginCookie = response.headers['set-cookie'].pop().split(';')[0];
 				var logoutJSON = {
-					"username": "test",
-					"test_key": "some_test_key"
+					"username": "test"
 				};
 				request.post({
 					uri: base_url + "logout",
+					headers: {Cookie: loginCookie},
 					method: "POST",
 					json: logoutJSON
 				},
@@ -89,11 +93,11 @@ describe("POST /login and /logout", function () {
 					assert.equal(200, response.statusCode);
 					assert.equal(response.body.redirect, base_url);
 					var signoutJSON = {
-						"username": "test",
-						"test_key": "some_test_key"
+						"username": "test"
 					};
 					request.post({
 						uri: base_url + "signout",
+						headers: {Cookie: signupCookie},
 						method: "POST",
 						json: signoutJSON
 					},
@@ -106,4 +110,26 @@ describe("POST /login and /logout", function () {
 			});
 		});
 	});
-});	
+});
+
+// describe("POST /")
+
+// describe("GET /people/username", function() {
+// 	it("fetching user profile", function(done) {
+// 		var getUsernameJSON = {
+// 			"username": "test"
+// 		};
+// 		request.get({
+// 			uri: base_url + "people/username",
+// 			method: "GET",
+// 			json: getUsernameJSON
+// 		},
+// 		function(error, response, body){
+// 			assert.equal(200, response.statusCode);
+// 			assert.equal(response.body.username, "test");
+// 			assert.equal(response.body.bio, "A small boy raised on a farm.");
+// 			done();
+// 		});
+// 	});
+// });
+

@@ -5,7 +5,6 @@ var path = require("path");
 function Controller(){};
 
 Controller.prototype.get_authenticate = function(req, res) {
-	//req.session.loggedIn = false;
 	if(req.session.loggedIn === true) {
 		res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
 	} else {
@@ -68,13 +67,14 @@ Controller.prototype.post_signup = function(req, res) {
 										res.end();
 			      					} else {
 			      						req.session.loggedIn = true;
+			      						req.session.username = _username;
 			      						console.log("signed up");
 										res.setHeader("Content-Type", "application/json");
-										var jsonReply = {redirect: "http://localhost:8080/"};
+										var jsonReply = {redirect: global.base_url};
 										res.send(JSON.stringify(jsonReply));
 										res.end();
 			      					}
-			      					//return;
+			      					
 								});
 			        		}
 			    		});
@@ -108,9 +108,10 @@ Controller.prototype.post_login = function(req, res) {
 			bcrypt.compare(_password, user.hashedPassword, function(err, result) {
 					if (result === true) {
 						console.log("you are now logged in");
+						req.session.username = _username;
 						req.session.loggedIn = true;
 						res.setHeader("Content-Type", "application/json");
-						var jsonReply = {redirect: "http://localhost:8080/"};
+						var jsonReply = {redirect: global.base_url};
 						res.send(JSON.stringify(jsonReply));
 						res.end();
 					} else {
@@ -132,19 +133,18 @@ Controller.prototype.post_login = function(req, res) {
 }
 
 Controller.prototype.post_logout = function(req, res) {
-	if (req.body.test_key != "some_test_key") {
-		req.session.loggedIn = false;
-	}
+	req.session.destroy();
 	res.setHeader("Content-Type", "application/json");
-	var jsonReply = {redirect: "http://localhost:8080/"};
+	var jsonReply = {redirect: global.base_url};
 	res.send(JSON.stringify(jsonReply));					
 	res.end();
 }
 
 Controller.prototype.post_signout = function(req, res) {
-	if (req.session.loggedIn === true || req.body.test_key === "some_test_key") {
+	if (req.session.loggedIn === true) {
 		// we remove user from database
-		var _username = req.body.username;
+		// need to get the username from the session
+		var _username = req.session.username;
 
 		// should always work :o
 		User.remove({username: _username}, function(err) {
@@ -155,8 +155,9 @@ Controller.prototype.post_signout = function(req, res) {
 				res.end();
 			} else {
 				console.log("removed user: " + _username);
+				req.session.destroy();
 				res.setHeader("Content-Type", "application/json");
-				var jsonReply = {redirect: "http://localhost:8080/"};
+				var jsonReply = {redirect: global.base_url};
 				res.send(JSON.stringify(jsonReply));					
 				res.end();
 			}  
@@ -164,9 +165,7 @@ Controller.prototype.post_signout = function(req, res) {
 
 
 	} else {
-		res.setHeader("Content-Type", "application/json");
-		var jsonReply = {error: "Stop trying to hack my webapp."};
-		res.send(JSON.stringify(jsonReply));					
+		res.sendStatus(404);
 		res.end();
 	}
 }
