@@ -4,7 +4,6 @@ function Controller(){};
 
 Controller.prototype.get_people_profile = function(req, res) {
 	if (req.session.loggedIn === true) {
-		// need to send some data back depending on username
 		var _username = req.params.username;
 		
 		console.log(_username);
@@ -82,17 +81,12 @@ Controller.prototype.get_people_my_profile = function(req, res) {
 
 Controller.prototype.put_people_my_profile = function(req, res) {
 	if (req.session.loggedIn === true) {
-		//at this point look at the data sent,
 		var _first_name = req.body.first_name;
 		var _last_name = req.body.last_name;
 		var _username = req.body.username;
 		var _email = req.body.email;
 		var _bio = req.body.bio;
 		var _id = req.params.id;
-		// grab the model by username stored in session,
-		// if the username has not changed, then update everything else
-		//console.log(_username);
-		//console.log(req.session.username);
 		if (_username === req.session.username) {
 			User.findById(_id, function(err, user) {
 				if (err) {
@@ -116,8 +110,16 @@ Controller.prototype.put_people_my_profile = function(req, res) {
 							res.sendStatus(404);
 							res.end();
 						} else {
+							var responseJSON = {
+								first_name: _first_name,
+								last_name: _last_name,
+								username: _username,
+								email: _email,
+								bio: _bio
+							}
+							// console.log("put_people_my_profile");
 							res.setHeader("Content-Type", "application/json");
-							res.send(updatedUser);
+							res.send(responseJSON);
 							res.end();
 						}
 					});
@@ -131,7 +133,6 @@ Controller.prototype.put_people_my_profile = function(req, res) {
 					res.end();
 				} else {
 					if (c === 0) {
-						// username is not taken, can update this profile
 						User.findById(_id, function(err, user) {
 							if (err) {
 								console.log(err);
@@ -154,17 +155,22 @@ Controller.prototype.put_people_my_profile = function(req, res) {
 										res.sendStatus(404);
 										res.end();
 									} else {
-										// console.log("changed username");
+										var responseJSON = {
+											first_name: _first_name,
+											last_name: _last_name,
+											username: _username,
+											email: _email,
+											bio: _bio
+										}
 										req.session.username = _username;
 										res.setHeader("Content-Type", "application/json");
-										res.send(updatedUser);
+										res.send(responseJSON);
 										res.end();
 									}
 								});
 							}
 						});
 					} else {
-						// user name is taken, we need to send error message
 						var responseJSON = {
 							error: "Username is taken."
 						};
@@ -175,7 +181,6 @@ Controller.prototype.put_people_my_profile = function(req, res) {
 				}
 			});
 		}
-		// if the username has changed, make sure it is not taken
 	} else {	
 		res.sendStatus(404);
 		res.end();

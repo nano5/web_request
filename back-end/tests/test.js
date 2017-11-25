@@ -213,3 +213,144 @@ describe("GET /people/profile/", function () {
 		});
 	});
 });
+
+
+describe("PUT people/my_profile", function() {
+	it("going to update everything but username and make sure it works", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"email": "test@example.com",
+			"username": "test",
+			"password": "password"
+		}
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			assert.equal(base_url, response.body.redirect);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			request.get({
+				uri: base_url + "people/my_profile",
+				method: "GET",
+				headers: {Cookie: signupCookie},
+				json: {}
+			},
+			function(error, response, body) {
+				assert.equal("test", response.body.first_name);
+				assert.equal("test", response.body.last_name);
+				assert.equal("test@example.com", response.body.email);
+				assert.equal("test", response.body.username);
+				var userID = response.body.id;
+				var updateJSON = {
+					"first_name": "hello",
+					"last_name": "hello",
+					"username": "test",
+					"email": "hello@example.com",
+					"bio": "A boy raised on a farm.",
+					"id": userID
+				}
+
+				request.put({
+					uri: base_url + "people/my_profile/" + userID,
+					method: "PUT",
+					headers: {Cookie: signupCookie},
+					json: updateJSON
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					assert.equal("hello", response.body.first_name);
+					assert.equal("hello", response.body.last_name);
+					assert.equal("test", response.body.username);
+					assert.equal("hello@example.com", response.body.email);
+					assert.equal("A boy raised on a farm.", response.body.bio);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie},
+						json: {}
+					},
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						assert.equal(base_url, response.body.redirect);
+						done();
+					});
+				});
+			});
+		});
+
+	});
+});
+
+describe("PUT people/my_profile", function() {
+	it("going to update everything and username and make sure it works", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"email": "test@example.com",
+			"username": "test",
+			"password": "password"
+		}
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			assert.equal(base_url, response.body.redirect);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			request.get({
+				uri: base_url + "people/my_profile",
+				method: "GET",
+				headers: {Cookie: signupCookie},
+				json: {}
+			},
+			function(error, response, body) {
+				assert.equal("test", response.body.first_name);
+				assert.equal("test", response.body.last_name);
+				assert.equal("test@example.com", response.body.email);
+				assert.equal("test", response.body.username);
+				var userID = response.body.id;
+				var updateJSON = {
+					"first_name": "hello",
+					"last_name": "hello",
+					"username": "hello",
+					"email": "hello@example.com",
+					"bio": "A boy raised on a farm.",
+					"id": userID
+				}
+
+				request.put({
+					uri: base_url + "people/my_profile/" + userID,
+					method: "PUT",
+					headers: {Cookie: signupCookie},
+					json: updateJSON
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					assert.equal("hello", response.body.first_name);
+					assert.equal("hello", response.body.last_name);
+					assert.equal("hello", response.body.username);
+					assert.equal("hello@example.com", response.body.email);
+					assert.equal("A boy raised on a farm.", response.body.bio);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie},
+						json: {}
+					},
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						assert.equal(base_url, response.body.redirect);
+						done();
+					});
+				});
+			});
+		});
+
+	});
+});
