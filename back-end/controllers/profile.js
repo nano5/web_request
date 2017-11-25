@@ -124,8 +124,56 @@ Controller.prototype.put_people_my_profile = function(req, res) {
 				}
 			});
 		} else {
-			console.log("user name has changed");
-
+			User.count({username: _username}, function(err, c) {
+				if (err) {
+					console.log(err);
+					res.sendStatus(404);
+					res.end();
+				} else {
+					if (c === 0) {
+						// username is not taken, can update this profile
+						User.findById(_id, function(err, user) {
+							if (err) {
+								console.log(err);
+								res.sendStatus(404);
+								res.end();
+							}
+							else {
+								user.set({
+									first_name: _first_name,
+									last_name: _last_name,
+									username: _username,
+									email: _email,
+									profile: {
+										bio: _bio
+									}
+								});
+								user.save(function(err, updatedUser) {
+									if (err) {
+										console.log(err);
+										res.sendStatus(404);
+										res.end();
+									} else {
+										// console.log("changed username");
+										req.session.username = _username;
+										res.setHeader("Content-Type", "application/json");
+										res.send(updatedUser);
+										res.end();
+									}
+								});
+							}
+						});
+					} else {
+						// user name is taken, we need to send error message
+						var responseJSON = {
+							error: "Username is taken."
+						};
+						res.setHeader("Content-Type", "application/json");
+						res.send(responseJSON);
+						res.end();
+					}
+				}
+			});
 		}
 		// if the username has changed, make sure it is not taken
 	} else {	

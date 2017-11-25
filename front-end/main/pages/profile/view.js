@@ -57,8 +57,12 @@ var Profile = Backbone.View.extend({
 		var profile = new this.options.Profile(profileDetails);
 		profile.save(null, {
 			success: function(_user) {
-				var template = _.template(profileMarkup);
-				view.$el.html(template({user: _user}));
+				if (_user.attributes.error) {
+					alert(_user.attributes.error);
+				} else {
+					var template = _.template(profileMarkup);
+					view.$el.html(template({user: _user}));
+				}
 			}
 		});
 		return false;
