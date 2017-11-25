@@ -25,8 +25,7 @@ Controller.prototype.post_signup = function(req, res) {
 		res.setHeader("Content-Type", "application/json");
 		var JSONreply = {error: "Please fill out the whole form."};
 		res.send(JSON.stringify(JSONreply));
-	}
-	else {
+	} else {
 		req.check("email", "invalid email").isEmail();
 		req.check("password", "invalid password").isLength({min: 4});
 		var count = User.count({username: _username}, function(err, c) {

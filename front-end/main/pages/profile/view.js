@@ -53,8 +53,14 @@ var Profile = Backbone.View.extend({
 	},
 	saveProfile: function(ev) {
 		var profileDetails = $(ev.currentTarget).serializeObject();
-		console.log("saving profile");
-		console.log(profileDetails);
+		var view = this;
+		var profile = new this.options.Profile(profileDetails);
+		profile.save(null, {
+			success: function(_user) {
+				var template = _.template(profileMarkup);
+				view.$el.html(template({user: _user}));
+			}
+		});
 		return false;
 	}
 });
