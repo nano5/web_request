@@ -5,6 +5,7 @@ var path = require("path");
 function Controller(){};
 
 Controller.prototype.get_authenticate = function(req, res) {
+	//req.session.destroy();
 	if(req.session.loggedIn === true) {
 		res.sendFile(path.join(__dirname + "/../../front-end/main/view.html"));
 	} else {
@@ -21,7 +22,6 @@ Controller.prototype.post_signup = function(req, res) {
 	var _password = req.body.password;
 	if (!_first_name || !_last_name || !_email || 
 		!_username || !_password) {
-		console.log(req.body);
 		res.setHeader("Content-Type", "application/json");
 		var JSONreply = {error: "Please fill out the whole form."};
 		res.send(JSON.stringify(JSONreply));
@@ -70,7 +70,11 @@ Controller.prototype.post_signup = function(req, res) {
 			      						req.session.username = _username;
 			      						console.log("signed up");
 										res.setHeader("Content-Type", "application/json");
-										var jsonReply = {redirect: global.base_url};
+										// sending back username to be used by front end applicaiton
+										var jsonReply = {
+											redirect: global.base_url,
+											username: _username
+										};
 										res.send(JSON.stringify(jsonReply));
 										res.end();
 			      					}
@@ -97,7 +101,6 @@ Controller.prototype.post_login = function(req, res) {
 	var _password = req.body.password;
 	User.findOne({username: _username}, "hashedPassword", function(err, user) {
 		if (err) {
-			console.log("send");
 			console.log(err);
 			res.setHeader("Content-Type", "application/json");
 			var jsonReply = {error: "Could not find username/password"};
@@ -111,7 +114,10 @@ Controller.prototype.post_login = function(req, res) {
 						req.session.username = _username;
 						req.session.loggedIn = true;
 						res.setHeader("Content-Type", "application/json");
-						var jsonReply = {redirect: global.base_url};
+						var jsonReply = {
+							redirect: global.base_url,
+							username: _username
+						};
 						res.send(JSON.stringify(jsonReply));
 						res.end();
 					} else {
@@ -133,11 +139,19 @@ Controller.prototype.post_login = function(req, res) {
 }
 
 Controller.prototype.post_logout = function(req, res) {
-	req.session.destroy();
-	res.setHeader("Content-Type", "application/json");
-	var jsonReply = {redirect: global.base_url};
-	res.send(JSON.stringify(jsonReply));					
-	res.end();
+	req.session.destroy(function(err) {
+		if (err) {
+			res.setHeader("Content-Type", "application/json");
+			var jsonReply = {error: "Sorry but we could not log you out."};
+			res.send(JSON.stringify(jsonReply));					
+			res.end();
+		} else {
+			res.setHeader("Content-Type", "application/json");
+			var jsonReply = {redirect: global.base_url};
+			res.send(JSON.stringify(jsonReply));					
+			res.end();
+		}
+	});
 }
 
 Controller.prototype.post_signout = function(req, res) {
@@ -154,12 +168,20 @@ Controller.prototype.post_signout = function(req, res) {
 				res.send(JSON.stringify(jsonReply));					
 				res.end();
 			} else {
-				console.log("removed user: " + _username);
-				req.session.destroy();
-				res.setHeader("Content-Type", "application/json");
-				var jsonReply = {redirect: global.base_url};
-				res.send(JSON.stringify(jsonReply));					
-				res.end();
+				req.session.destroy(function(err) {
+					if (err) {
+						console.log(err);
+						res.setHeader("Content-Type", "application/json");
+						var jsonReply = {error: "Sorry, we could not sign you out"};
+						res.send(JSON.stringify(jsonReply));
+					} else {
+						console.log("removed user: " + _username);
+						res.setHeader("Content-Type", "application/json");
+						var jsonReply = {redirect: global.base_url};
+						res.send(jsonReply);					
+						res.end();
+					}
+				});
 			}  
 		});
 

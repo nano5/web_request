@@ -1,14 +1,61 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-import markup from 'main/pages/profile/partials/profile-page-template.htm'
+import profileMarkup from 'main/pages/profile/partials/profile-page-template.htm'
+import editProfileMarkup from "main/pages/profile/partials/profile_edit-page-template.htm"
+
+$.fn.serializeObject = function() {
+  	var o = {};
+  	var a = this.serializeArray();
+  	$.each(a, function() {
+      if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+              o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+      } else {
+          o[this.name] = this.value || '';
+      }
+  	});
+  		return o;
+};
+
 
 var Profile = Backbone.View.extend({
 	el: ".content",
-	render: function(Model) {
-		var model = new Model();
-		var template = _.template(markup);
-		this.$el.html(template(model));
+	initialize: function(options) {
+		this.options = options;
+	},
+	render: function() {
+		var profile = new this.options.Profile();
+		var view = this;
+		profile.fetch({
+			success: function(_user) {
+				var template = _.template(profileMarkup);
+				view.$el.html(template({user: _user}));
+			}
+		});	
+	},
+	events: {
+		"click #edit": "editProfile",
+		"submit .submit-profile": "saveProfile"
+	},
+	editProfile: function() {
+		var profile = new this.options.Profile();
+		var view = this;
+		profile.fetch({
+			success: function(_user) {
+				var template = _.template(editProfileMarkup);
+				view.$el.html(template({user: _user}));
+			}
+		});
+		return false;
+	},
+	saveProfile: function(ev) {
+		var profileDetails = $(ev.currentTarget).serializeObject();
+		console.log("saving profile");
+		console.log(profileDetails);
+		return false;
 	}
 });
 

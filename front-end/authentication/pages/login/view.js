@@ -39,6 +39,7 @@ var Login = Backbone.View.extend({
 			success: function(res) {
 				console.log("logged in user.");
 				if (res.attributes.redirect) {
+					global.username = res.attributes.username;
 					window.location.replace(res.attributes.redirect);
 				} else {
 					alert(res.attributes.error);

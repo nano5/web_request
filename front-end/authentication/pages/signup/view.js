@@ -24,6 +24,7 @@ var Signup = Backbone.View.extend({
 			success: function(res) {
 				if (res.attributes.redirect) {
 					console.log("user signed up");
+					global.username = res.attributes.username;
 					window.location.replace(res.attributes.redirect);
 				} else {
 					alert(res.attributes.error);

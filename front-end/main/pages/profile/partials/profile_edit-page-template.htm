@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+        </style>
+    </head>
+    <body>
+        <div class="container">    
+            <div class="row">
+            	<form class="submit-profile">
+                <div class="panel panel-default">
+                    <div class="panel-heading">  
+                        <h4 >User Profile</h4>
+                    <button type="submit"> Save</button>
+                    </div>
+                        <div class="panel-body">
+                            <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+                            <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" class="img-circle img-responsive"> 
+                        </div>
+	                        <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8" >
+	                            <div class="container" >
+
+	                            <h2>
+	                            	<input type="text" name="first_name" placeholder="Enter first name." value ="<%= user.get("first_name")%>">
+	                            	<input type="text" name="last_name" placeholder="Enter last name." value="<%= user.get("last_name")%>">
+	                            </h2>
+	                            <input type="text" name="username" placeholder="Enter username." value="<%= user.get("username")%>"</input>
+	                            <p></p>
+	                          
+	                           
+	                            </div>
+	                            <hr>
+	                            <ul class="container details" >
+	                            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>
+	                            	<input type="email" name="email" placeholder="Enter email." value="<%= user.get("email")%>" style="width: 200px;"></p></li>
+	                            </ul>
+	                            <hr>
+	                            <div class="col-sm-5 col-xs-6 tital " >
+	                                <p>
+	                                   <textarea style="height: 100px; width: 400px;" type="input" name="bio" placeholder="Enter bio." value="<%= user.get("bio")%>"></textarea>	
+	                                </p>
+	                            </div>
+	                        </div>
+	                        <input type="hidden" name="id" value="<%= user.get("id")%>"></input>
+                    	</form>
+                    </div>
+                </div>
+            </form>
+            </div>
+    </body>
+</html>

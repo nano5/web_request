@@ -8,8 +8,8 @@ var Backbone = require("backbone");
 function Controller(){};
 
 Controller.prototype.profile = function() {
-	var profile = new view.default.Profile();
-	profile.render(model.default.Profile)
+	var profile = new view.default.Profile({Profile: model.default.Profile});
+	profile.render();
 }
 
 var controller = new Controller();

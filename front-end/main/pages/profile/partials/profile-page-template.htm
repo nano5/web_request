@@ -1,1 +1,40 @@
-<h1> profile-page-template </h1>
+<html>
+    <head>
+        <style>
+        </style>
+    </head>
+    <body>
+        <div class="container">    
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">  
+                        <h4 >User Profile</h4>
+                        <button id="edit"> Edit</button>
+                    </div>
+                        <div class="panel-body">
+                            <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+                            <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" class="img-circle img-responsive"> 
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8" >
+                            <div class="container" >
+                            <h2><%= user.get("first_name") %> <%= user.get("last_name") %></h2>
+                            <p>(<%= user.get("username") %>)</p>
+                          
+                           
+                            </div>
+                            <hr>
+                            <ul class="container details" >
+                            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span><%= user.get("email") %></p></li>
+                            </ul>
+                            <hr>
+                            <div class="col-sm-5 col-xs-6 tital " >
+                                <p>
+                                    Bio: <%= user.get("bio") %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+</html>
