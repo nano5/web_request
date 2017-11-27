@@ -27,44 +27,48 @@ var Router = Backbone.Router.extend({
 	},
 	profile: function() {
 		console.log("will render profile view");
-		$(".active").toggleClass("active");
-		$("#menu-profile").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-profile").toggleClass("active");
 		profileApp.start()
 	},
 	people: function() {
-		console.log("will render people view");
-		$(".active").toggleClass("active");
-		$("#menu-people").toggleClass("active");
-		peopleApp.start();
+		if (!$("#menu-people").hasClass("active")) {
+			console.log("will render people view");
+			$(".menu-tab.active").toggleClass("active");
+			$(".menu-tab#menu-people").toggleClass("active");
+			peopleApp.start();
+		}
+
+		this.navigate("#people/find_people", {trigger: true});
 	},
 	groups: function() {
 		console.log("will render groups view");
-		$(".active").toggleClass("active");
-		$("#menu-groups").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-groups").toggleClass("active");
 		groupsApp.start();
 	},
 	messages: function() {
 		console.log("will render messages view");
-		$(".active").toggleClass("active");
-		$("#menu-messages").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-messages").toggleClass("active");
 		messagesApp.start();
 	},
 	email: function() {
 		console.log("will render email view");
-		$(".active").toggleClass("active");
-		$("#menu-email").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-email").toggleClass("active");
 		emailApp.start();
 	},
 	chatRooms: function() {
 		console.log("will render chatRooms view");
-		$(".active").toggleClass("active");
-		$("#menu-chat_rooms").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-chat_rooms").toggleClass("active");
 		chatRoomsApp.start();
 	},
 	requests: function() {
 		console.log("will render requests view");
-		$(".active").toggleClass("active");
-		$("#menu-requests").toggleClass("active");
+		$(".menu-tab.active").toggleClass("active");
+		$(".menu-tab#menu-requests").toggleClass("active");
 		requestsApp.start();
 	}
 
