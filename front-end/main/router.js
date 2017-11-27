@@ -38,8 +38,6 @@ var Router = Backbone.Router.extend({
 			$(".menu-tab#menu-people").toggleClass("active");
 			peopleApp.start();
 		}
-
-		//this.navigate("#people/find_people", {trigger: true});
 	},
 	groups: function() {
 		console.log("will render groups view");
