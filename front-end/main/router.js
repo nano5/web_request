@@ -39,7 +39,7 @@ var Router = Backbone.Router.extend({
 			peopleApp.start();
 		}
 
-		this.navigate("#people/find_people", {trigger: true});
+		//this.navigate("#people/find_people", {trigger: true});
 	},
 	groups: function() {
 		console.log("will render groups view");
