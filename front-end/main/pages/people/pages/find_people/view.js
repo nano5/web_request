@@ -3,6 +3,7 @@ var _ = require("underscore");
 var Backbone = require("backbone");
 var Profiles = require("main/pages/people/pages/find_people/model").default.Profiles;
 import findPeopleMarkup from "main/pages/people/pages/find_people/partials/find_people-page-template.htm"
+import profileMarkup from "main/pages/people/pages/find_people/partials/profile-scroll-card.htm"
 
 $.fn.serializeObject = function() {
   	var o = {};
@@ -31,10 +32,13 @@ var FindPeople = Backbone.View.extend({
 	},
 	findPeople: function(ev) {
 		var searchText = $(ev.currentTarget).serializeObject().search_text;
-		var profiles = new Profiles({id: searchText});
-		profiles.fetch({
+		var profiles = new Profiles();
+		var view = this;
+		profiles.fetch({ data: $.param({ queryString: searchText}),
 			success: function(_profiles) {
-				console.log(_profiles);
+				var profilesTemplate = _.template(profileMarkup);
+				var profileList = profilesTemplate({profiles: _profiles.models});
+				view.$el.find(".list-group.profile-list-group").html(profileList);
 			}
 		});
 		return false;

@@ -4,9 +4,11 @@
 		.profiles-scroll-area {
 			overflow: scroll;
 			height: 600px;
+			min-width: 150px;
 			display: inline-block;
 			float: left;
 			padding-right: 10px;
+			border: solid #e7e7e7;
 		}
 
 		.profiles-action-area {
@@ -31,16 +33,16 @@
 			</div>
 		</form>
 		<div class="profiles-scroll-area">
-			<ul class="list-group">
-			
-		</ul>
+			<ul class="list-group profile-list-group">
+				
+			</ul>
 		</div>
 		<div class="profiles-action-area">
 		</div>
 		<script>
-			$("#search-people-input-text").keyup(function() {
-				$("#search-people-form-button").click();
-			});
+			// $("#search-people-input-text").keyup(function() {
+			// 	$("#search-people-form-button").click();
+			// });
 		</script>
 	</body>
 </html>

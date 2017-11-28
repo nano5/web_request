@@ -1,0 +1,19 @@
+<% _.each(profiles, function(profile) { %>
+  			<li class="list-group-item">
+  				<div class="dropdown">
+  					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    					<span class="glyphicon glyphicon-user"></span>
+    					<%= profile.get("first_name") %> <%= profile.get("last_name") %> 
+     					<%= profile.get("username")%>
+    				<span class="caret"></span>
+  					</button>
+  					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    					<li><a>Message</a></li>
+    					<li><a>Add to favorites</a></li>
+    					<li><a>Send web request</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a>Profile</a></li>
+  					</ul>
+				</div>
+  			</li>
+<% }); %>

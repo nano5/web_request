@@ -7,7 +7,7 @@ function Controller(){};
 
 Controller.prototype.get_people_profiles = function(req, res) {
 	if (req.session.loggedIn === true) {
-		var queryString = req.params.queryString;
+		var queryString = req.query.queryString;
 		var query = User.find({$or: [{"first_name": queryString}, {"last_name": queryString}, 
 			      {"username": queryString}]}).select("first_name last_name username email -_id");
 
@@ -17,7 +17,6 @@ Controller.prototype.get_people_profiles = function(req, res) {
 			res.end();
 		});
 	} else {
-		console.log("here");
 		res.sendStatus(404);
 		res.end();
 	}
