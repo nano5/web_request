@@ -1,11 +1,26 @@
 <html>
 <head>
+	<style>
+		.profiles-scroll-area {
+			overflow: scroll;
+			height: 600px;
+			display: inline-block;
+			float: left;
+			padding-right: 10px;
+		}
 
+		.profiles-action-area {
+			height: 600px;
+			width: 550px;
+			border: solid #e7e7e7;
+			float: left;
+		}
+	</style>
 <head>
 	<body>
-		<form class="navbar-form" role="search" style="float: left;">
+		<form class="navbar-form search-people-form" role="search" style="float: left;">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search" id="search-people-input-text">
+				<input name="search_text"  type="text" class="form-control" placeholder="Search" id="search-people-input-text">
 				<span class="input-group-btn">
 					<button type="submit" class="btn btn-default" id="search-people-form-button">
 						<span class="glyphicon glyphicon-search">
@@ -15,9 +30,16 @@
 				</span>
 			</div>
 		</form>
+		<div class="profiles-scroll-area">
+			<ul class="list-group">
+			
+		</ul>
+		</div>
+		<div class="profiles-action-area">
+		</div>
 		<script>
 			$("#search-people-input-text").keyup(function() {
-				$("search-people-form-button").click();
+				$("#search-people-form-button").click();
 			});
 		</script>
 	</body>

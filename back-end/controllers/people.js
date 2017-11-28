@@ -17,6 +17,7 @@ Controller.prototype.get_people_profiles = function(req, res) {
 			res.end();
 		});
 	} else {
+		console.log("here");
 		res.sendStatus(404);
 		res.end();
 	}

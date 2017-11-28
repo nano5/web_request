@@ -5,7 +5,7 @@ function Controller(){};
 
 Controller.prototype.findPeople = function() {
 	var findPeople = new view.default.FindPeople();
-	findPeople.render(model.default.FindPeople);
+	findPeople.render(model.default.Profiles);
 }
 
 var _controller = new Controller();
