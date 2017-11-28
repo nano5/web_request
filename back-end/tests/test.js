@@ -354,3 +354,46 @@ describe("PUT people/my_profile", function() {
 
 	});
 });
+
+describe("GET /people/profiles", function() {
+	it("query user profiles", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+    		"last_name": "test",
+    		"email": "test@example.com",
+    		"username": "test",
+    		"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			assert.equal(base_url, response.body.redirect);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			request.get({
+				uri: base_url + "people/profiles" + "/Contreras",
+				method: "GET",
+				headers: {Cookie: signupCookie},
+				json: {}
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+
+				request.post({
+					uri: base_url + "signout",
+					method: "POST",
+					headers: {Cookie: signupCookie},
+					json: {}
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					assert.equal(base_url, response.body.redirect);
+					done();
+				});
+			});
+		});
+	});
+});
