@@ -374,7 +374,7 @@ describe("GET /people/profiles", function() {
 			assert.equal(base_url, response.body.redirect);
 			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
 			request.get({
-				uri: base_url + "people/profiles" + "/Contreras",
+				uri: base_url + "people/profiles?queryString=Contreras",
 				method: "GET",
 				headers: {Cookie: signupCookie},
 				json: {}
@@ -394,6 +394,152 @@ describe("GET /people/profiles", function() {
 					done();
 				});
 			});
+		});
+	});
+});
+
+describe("POST /favorites/add_user", function() {
+	it("going to add user to a favorites list dependent on category", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"email": "test1@example.com",
+			"username": "test1",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		}, 
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"email": "test2@example.com",
+				"username": "test2",
+				"password": "password"
+			};
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addUserJSON = {
+					"other_username": "test2",
+					"category": "generic"
+				};
+				request.post({
+					uri: base_url + "favorites/add_user",
+					headers: {Cookie: signupCookie1},
+					method: "POST",
+					json: addUserJSON
+				}, function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.post({
+						uri: base_url + "signout",
+						headers: {Cookie: signupCookie1},
+						method: "POST",
+						json: {}
+					}, function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						request.post({
+							uri: base_url + "signout",
+							headers: {Cookie: signupCookie2},
+							method: "POST",
+							json: {}
+						}, function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+});
+
+describe("POST /favorites/add_category", function() {
+	it("going to add category to users favorites by category list", function(done) {
+		var singupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"email": "test1@example.com",
+			"username": "test1",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: singupJSON1
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"email": "test2@example.com",
+				"username": "test2",
+				"password": "password"
+			}
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addCategoryJSON = {
+					"category": "IT"
+				};
+				request.post({
+					uri: base_url + "favorites/add_category",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addCategoryJSON
+				}, function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					var addUserJSON = {
+						"other_username": "test2",
+						"category": "IT"
+					};
+					request.post({
+						uri: base_url + "favorites/add_user",
+						headers: {Cookie: signupCookie1},
+						method: "POST",
+						json: addUserJSON
+					}, function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						request.post({
+							uri: base_url + "signout",
+							method: "POST",
+							headers: {Cookie: signupCookie1},
+							json: {}
+						},
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie2},
+								json: {}
+							},
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								done();
+							});
+						});
+					});
+				});
+			});
+
 		});
 	});
 });

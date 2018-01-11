@@ -5,7 +5,7 @@ function Controller(){};
 
 Controller.prototype.favorites = function() {
 	var favorites = new view.default.Favorites();
-	favorites.render(model.default.Favorites);
+	favorites.render(model.default.Profiles);
 }
 
 var _controller = new Controller();

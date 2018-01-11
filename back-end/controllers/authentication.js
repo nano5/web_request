@@ -54,7 +54,7 @@ Controller.prototype.post_signup = function(req, res) {
 									profile: {
 										bio: ""
 									},
-									favorites: []
+									favorites_by_category:[{category: "generic", favorites: []}]
 								});
 								user.save(function(err) {
 			      					if(err){

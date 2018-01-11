@@ -5,7 +5,8 @@ import favoritesMarkup from "main/pages/people/pages/favorites/partials/favorite
 
 var Favorites = Backbone.View.extend({
 	el: ".people-content",
-	render: function(Favorites) {
+	render: function(Profiles) {
+		
 		var template = _.template(favoritesMarkup);
 		this.$el.html(template({}));
 	}

@@ -16,7 +16,8 @@ var userSchema = new mongoose.Schema({
 	profile: {
 		bio: String
 	},
-	favorites: [Number]
+	favorites_by_category: [{category: String, favorites: [String]}],
+
 }, {collection: "users"});
 
 var _User = mongoose.model("user", userSchema, "users");

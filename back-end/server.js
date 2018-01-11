@@ -12,6 +12,7 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var authenticationRouter = require("./routes/authentication").authenticationRouter;
 var profileRouter = require("./routes/profile").profileRouter;
 var peopleRouter = require("./routes/people").peopleRouter;
+var favoritesRouter = require("./routes/favorites").favoritesRouter;
 var app = express();
 global.base_url = "http://localhost:8080/";
 
@@ -38,6 +39,7 @@ app.use(webpackDevMiddleware(compiler, {
 app.use(authenticationRouter);
 app.use(profileRouter);
 app.use(peopleRouter);
+app.use(favoritesRouter);
 // at this point use comet
 
 
