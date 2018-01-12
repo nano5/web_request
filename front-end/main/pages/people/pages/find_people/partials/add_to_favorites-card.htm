@@ -2,14 +2,16 @@
   <head>
   </head>
   <body>
-    <form>
+    <form class="add-user-to-favorites">
       <div class="form-group">
         <label>Select Category for <%= first_name %> <%= last_name %> (<%= username %>)</label>
         
-        <select class="form-control">
-          <option>generic</option>
+        <select name="category" class="form-control">
+          <option value="generic">generic</option>
         </select>
+
+        <input type="hidden" name="other_username" value="<%= username %>">
         <button class="btn btn-default" type="submit">Add User To Favorites</button>
-  </form>
+    </form>
 </body>
 </html>

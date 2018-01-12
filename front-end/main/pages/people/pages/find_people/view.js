@@ -2,6 +2,7 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 var Profiles = require("main/pages/people/pages/find_people/model").default.Profiles;
+var FavoriteUser = require("main/pages/people/pages/find_people/model").default.FavoriteUser;
 import findPeopleMarkup from "main/pages/people/pages/find_people/partials/find_people-page-template.htm"
 import profileScrollCardMarkup from "main/pages/people/pages/find_people/partials/profile-scroll-card.htm"
 import messageCardMarkup from "main/pages/people/pages/find_people/partials/message-card.htm"
@@ -33,7 +34,8 @@ var FindPeople = Backbone.View.extend({
 	},
 	events: {
 		"submit .search-people-form": "findPeople",
-		"click .people-action_button": "executeAction"
+		"click .people-action_button": "executeAction",
+		"submit .add-user-to-favorites": "addUserToFavorites"
 	},
 	findPeople: function(ev) {
 		var searchText = $(ev.currentTarget).serializeObject().search_text;
@@ -73,6 +75,16 @@ var FindPeople = Backbone.View.extend({
 		}
 		
 		return true;
+	},
+	addUserToFavorites: function(ev) {
+		var addUserToFavoritesData = $(ev.currentTarget).serializeObject();
+		var favoriteUser = new FavoriteUser(addUserToFavoritesData);
+		favoriteUser.save(null, {
+			success: function(res) {
+				console.log("added user to favorites");
+			}
+		});
+		return false;
 	}
 });
 
