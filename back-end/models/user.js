@@ -18,7 +18,9 @@ var userSchema = new mongoose.Schema({
 	},
 	favorites_by_category: [{category: String, favorites: [String]}],
 
-}, {collection: "users"});
+}, {collection: "users",
+	usePushEach: true
+});
 
 var _User = mongoose.model("user", userSchema, "users");
 

@@ -84,8 +84,11 @@ var FindPeople = Backbone.View.extend({
 		favoriteUser.save(addUserToFavoritesData, {
 			success: function() {
 				console.log("added user to favorites");
-				var addToFavoritesSucessTemplate = _.template(addToFavoritesSuccessMarkup);
-				view.$el.find(".profiles-action-area").html(addToFavoritesSucessTemplate(addUserToFavoritesData));
+				alert(addUserToFavoritesData.other_username + " has been added to " + addUserToFavoritesData.category);
+			},
+			error: function() {
+				console.log("user already belongs to that category");
+				alert(addUserToFavoritesData.other_username + " is already in category " + addUserToFavoritesData.category);
 			}
 		});
 		return false;

@@ -23,18 +23,23 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 							var foundCategory = false;
 							for (var i = 0; i < user.favorites_by_category.length; ++i) {
 								if (user.favorites_by_category[i].category === _category) {
-									user.favorites_by_category[i].favorites.push(other_user._id);
-									user.save(function(err) {
-										if (err) {
-											console.log(err);
-											res.sendStatus(404);
-											res.end();
-										} else {
-											res.setHeader("Content-Type", "application/json");
-											res.send({});
-											res.end();
-										}
-									});
+									if (!elemInArray(other_user._id, user.favorites_by_category[i].favorites)) {
+										user.favorites_by_category[i].favorites.push(other_user._id);
+										user.save(function(err) {
+											if (err) {
+												console.log(err);
+												res.sendStatus(404);
+												res.end();
+											} else {
+												res.setHeader("Content-Type", "application/json");
+												res.send({});
+												res.end();
+											}
+										});
+									} else {
+										res.sendStatus(400);
+										res.end();
+									}
 									foundCategory = true;
 									break;
 								}
@@ -90,6 +95,15 @@ Controller.prototype.post_favorites_add_category = function(req, res) {
 		res.sendStatus(404);
 		res.end();
 	}
+}
+
+function elemInArray(elem, array) {
+	for (val in array) {
+		if (elem === val) {
+			return true;
+		}
+	}
+	return false;
 }
 
 var _controller = new Controller();
