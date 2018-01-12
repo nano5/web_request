@@ -10,10 +10,11 @@ Controller.prototype.get_people_profiles = function(req, res) {
 		var queryString = req.query.queryString;
 		var query = User.find({$or: [{"first_name": queryString}, {"last_name": queryString}, 
 			      {"username": queryString}]}).
-		select("first_name last_name username email favorite_categories -_id").
+		select("first_name last_name username email -_id").
 		where("username").ne(req.session.username);
 
 		query.exec(function(err, result) {
+			console.log(result);
 			res.setHeader("Content-Type", "application/json");
 			res.send(result);
 			res.end();

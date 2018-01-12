@@ -30,7 +30,8 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 											res.sendStatus(404);
 											res.end();
 										} else {
-											res.sendStatus(200);
+											res.setHeader("Content-Type", "application/json");
+											res.send({});
 											res.end();
 										}
 									});

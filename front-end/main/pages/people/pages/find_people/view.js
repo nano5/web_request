@@ -7,6 +7,7 @@ import findPeopleMarkup from "main/pages/people/pages/find_people/partials/find_
 import profileScrollCardMarkup from "main/pages/people/pages/find_people/partials/profile-scroll-card.htm"
 import messageCardMarkup from "main/pages/people/pages/find_people/partials/message-card.htm"
 import addToFavoritesMarkup from "main/pages/people/pages/find_people/partials/add_to_favorites-card.htm"
+import addToFavoritesSuccessMarkup from "main/pages/people/pages/find_people/partials/add_to_favorites_success.htm"
 import sendWebRequestMarkup from "main/pages/people/pages/find_people/partials/send_web_request-card.htm"
 import viewProfileMarkup from "main/pages/people/pages/find_people/partials/view_profile-card.htm"
 
@@ -78,10 +79,13 @@ var FindPeople = Backbone.View.extend({
 	},
 	addUserToFavorites: function(ev) {
 		var addUserToFavoritesData = $(ev.currentTarget).serializeObject();
-		var favoriteUser = new FavoriteUser(addUserToFavoritesData);
-		favoriteUser.save(null, {
-			success: function(res) {
+		var favoriteUser = new FavoriteUser();
+		var view = this;
+		favoriteUser.save(addUserToFavoritesData, {
+			success: function() {
 				console.log("added user to favorites");
+				var addToFavoritesSucessTemplate = _.template(addToFavoritesSuccessMarkup);
+				view.$el.find(".profiles-action-area").html(addToFavoritesSucessTemplate(addUserToFavoritesData));
 			}
 		});
 		return false;
