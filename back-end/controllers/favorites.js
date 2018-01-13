@@ -23,7 +23,7 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 							var foundCategory = false;
 							for (var i = 0; i < user.favorites_by_category.length; ++i) {
 								if (user.favorites_by_category[i].category === _category) {
-									if (!elemInArray(other_user._id, user.favorites_by_category[i].favorites)) {
+									if (!idInArray(other_user._id, user.favorites_by_category[i].favorites)) {
 										user.favorites_by_category[i].favorites.push(other_user._id);
 										user.save(function(err) {
 											if (err) {
@@ -97,9 +97,9 @@ Controller.prototype.post_favorites_add_category = function(req, res) {
 	}
 }
 
-function elemInArray(elem, array) {
-	for (val in array) {
-		if (elem === val) {
+function idInArray(id, array) {
+	for (var i = 0; i < array.length; ++i) {
+		if (id == array[i]) {
 			return true;
 		}
 	}
