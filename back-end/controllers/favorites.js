@@ -65,7 +65,7 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 	}
 }
 
-Controller.prototype.post_favorites_remove_user = function(req, res) {
+Controller.prototype.delete_favorites_remove_user = function(req, res) {
 	if (req.session.loggedIn === true) {
 		var _username = req.session.username;
 		var _other_username = req.body.other_username;
@@ -85,7 +85,7 @@ Controller.prototype.post_favorites_remove_user = function(req, res) {
 						} else {
 							if (other_user) {
 								var foundCategory = false;
-								for (var i = 0; i < user.favorites_by_category; ++i) {
+								for (var i = 0; i < user.favorites_by_category.length; ++i) {
 									if (_category === user.favorites_by_category[i].category) {
 										var index = null;
 										if ((index = idIndexInArray(other_user._id, user.favorites_by_category[i].favorites)) >= 0) {
@@ -179,7 +179,7 @@ function idInArray(id, array) {
 	return false;
 }
 
-function inIndexInArray(id, array) {
+function idIndexInArray(id, array) {
 	for (var i = 0; i < array.length; ++i) {
 		if (id == array[i]) {
 			return i;

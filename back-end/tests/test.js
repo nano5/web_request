@@ -543,3 +543,83 @@ describe("POST /favorites/add_category", function() {
 		});
 	});
 });
+
+describe("POST /favorites/remove_user", function() {
+	it("going to remove user from a category", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"email": "test1@example.com",
+			"username": "test1",
+			"password": "password"
+		};
+
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		}, function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"email": "test2@example.com",
+				"username": "test2",
+				"password": "password"
+			};
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addUserJSON = {
+					"category": "generic",
+					"other_username": "test2"
+				}
+				request.post({
+					uri: base_url + "favorites/add_user",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addUserJSON
+				}, function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					var removeUserJSON = {
+						"category": "generic",
+						"other_username": "test2"
+					}
+					request.delete({
+						uri: base_url + "favorites/remove_user",
+						method: "DELETE",
+						headers: {Cookie: signupCookie1},
+						json: removeUserJSON
+					}, function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						request.post({
+							uri: base_url + "signout",
+							method: "POST",
+							headers: {Cookie: signupCookie1},
+							json: {}
+						}, 
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie2},
+								json: {}
+							},
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});
