@@ -772,5 +772,34 @@ describe("DELETE /favorites/remove_category", function() {
 	});
 });
 
+describe("GET /favorites/my_favorites", function() {
+	it("going to grab all the users favorites", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"email": "test@example.com",
+			"username": "test",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		}, function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			request.get({
+				uri: base_url + "favorites/my_favorites",
+				method: "GET",
+				headers: {Cookie: signupCookie},
+				json: {}
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				done();
+			});
+		});
+	});
+});
 
 
