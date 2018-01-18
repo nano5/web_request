@@ -2,7 +2,7 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 
-var FavoritesByCategory = Backbone.Collection.extend({
+var FavoritesByCategory = Backbone.Model.extend({
 	url: global.base_url + "favorites/my_favorites"
 });
 

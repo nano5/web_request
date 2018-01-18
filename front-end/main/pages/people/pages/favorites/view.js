@@ -10,14 +10,16 @@ var Favorites = Backbone.View.extend({
 		var favoritesByCategory = new this.options.FavoritesByCategory();
 		var view = this;
 		favoritesByCategory.fetch({
-			success: function(collectionObject) {
-				var _favoritesByCategory = collectionObject.models[0].attributes;
+			success: function(modelObject) {
+				var _favoritesByCategory = modelObject.attributes;
 				for (var category in _favoritesByCategory) {
 					var _ids = _favoritesByCategory[category];
 					var profiles = new view.options.Profiles();
 					profiles.fetch({ data: $.param({ids: _ids}),
 						success: function(modelObject) {
 							console.log(modelObject);
+							// now I can render what I need to render
+							
 						}
 					});
 				}
