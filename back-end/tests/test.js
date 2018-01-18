@@ -796,10 +796,108 @@ describe("GET /favorites/my_favorites", function() {
 			},
 			function(error, response, body) {
 				assert.equal(200, response.statusCode);
-				done();
+				request.post({
+					uri: base_url + "signout",
+					method: "POST",
+					headers: {Cookie: signupCookie},
+					json: {}
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					done();
+				});
 			});
 		});
 	});
 });
 
-
+describe("GET /favorites/profiles", function() {
+	it("going to get list of users by id then retrieve their profiles", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"username": "test1",
+			"email": "test1@example.com",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"username": "test2",
+				"email": "test2@example.com",
+				"password": "password"
+			}
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			}, 
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addUserJSON = {
+					"category": "generic",
+					"other_username": "test2"
+				}
+				request.post({
+					uri: base_url + "favorites/add_user",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addUserJSON
+				}, 
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.get({
+						uri: base_url + "favorites/my_favorites",
+						method: "GET",
+						headers: {Cookie: signupCookie1},
+						json:{}
+					}, 
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						var _ids = []
+						for (var key in body.favorites_by_category) {
+							_ids.push(body.favorites_by_category[key]);
+						}
+						request.get({
+							uri: base_url + "favorites/profiles",
+							method: "GET",
+							headers: {Cookie: signupCookie1},
+							json: {ids: _ids}
+						}, 
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie1},
+								json: {}
+							},
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								request.post({
+									uri: base_url + "signout",
+									method: "POST",
+									headers: {Cookie: signupCookie2},
+									json: {}
+								}, 
+								function(error, response, body) {
+									assert.equal(200, response.statusCode);
+									done();
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});

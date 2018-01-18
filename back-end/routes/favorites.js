@@ -6,5 +6,6 @@ _favoritesRouter.delete("/favorites/remove_user", favoritesController.delete_fav
 _favoritesRouter.post("/favorites/add_category", favoritesController.post_favorites_add_category);
 _favoritesRouter.delete("/favorites/remove_category", favoritesController.delete_favorites_remove_category);
 _favoritesRouter.get("/favorites/my_favorites", favoritesController.get_favorites_my_favorites);
+_favoritesRouter.get("/favorites/profiles", favoritesController.get_favorites_profiles);
 
 module.exports = {favoritesRouter: _favoritesRouter};

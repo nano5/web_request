@@ -1,9 +1,42 @@
 <html>
   <head>
+  	<style>
+    .dropdown-menu>li>.people-action_button {
+	    display: block;
+	    padding: 3px 20px;
+	    clear: both;
+	    font-weight: 400;
+	    line-height: 1.42857143;
+	    color: #333;
+	    white-space: nowrap;
+	    border: none;
+	}
+  </style>
   </head>
   <body>
     <div class="favorites-content">
-      
+     	<% _.each(function(favorites_by_category, category_favorites) { %>
+     		<li class="list-group-item">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+  					<span class="glyphicon glyphicon-user"></span>
+
+  				<span class="caret"></span>
+					</button>
+  					<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+  					<li><h1> <%= category_favorites.key %></h1></li>
+     				<% _.each(category_favorites.value, favorite) { %>
+            
+    					<li><a>Message</a></li>
+    					<li><a>Add to favorites</a></li>
+    					<li><a>Send web request</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a>View profile</a></li>
+  					</ul>
+				</div>
+					<% }); %>
+			</li>
+  	<% }); %>
     </div>
   </body>
 </html>

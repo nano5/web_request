@@ -5,9 +5,16 @@ import favoritesMarkup from "main/pages/people/pages/favorites/partials/favorite
 
 var Favorites = Backbone.View.extend({
 	el: ".people-content",
-	render: function(Profiles) {
-		
+	render: function(options) {
+		this.options = options;
+		var favorites = new this.options.Favorites();
+		favorites.fetch({
+			success: function(favorites) {
+				
+			}
+		});
 		var template = _.template(favoritesMarkup);
+		
 		this.$el.html(template({}));
 	}
 });

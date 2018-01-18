@@ -5,7 +5,10 @@ function Controller(){};
 
 Controller.prototype.favorites = function() {
 	var favorites = new view.default.Favorites();
-	favorites.render(model.default.Profiles);
+	favorites.render({
+						Favorites: model.default.Favorites,
+						Profiles: model.default.Profiles
+					});
 }
 
 var _controller = new Controller();
