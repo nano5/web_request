@@ -204,7 +204,7 @@ Controller.prototype.get_favorites_my_favorites = function(req, res) {
 			} else {
 				if (user) {
 					res.setHeader("Content-Type", "application/json");
-					res.send({favorites_by_category: user.favorites_by_category});
+					res.send(user.favorites_by_category);
 					res.end();
 				} else {
 					console.log("user " + _username + " does not exist");
@@ -221,7 +221,7 @@ Controller.prototype.get_favorites_my_favorites = function(req, res) {
 
 Controller.prototype.get_favorites_profiles = function(req, res) {
 	if (req.session.loggedIn === true) {
-		var ids = req.body.ids;
+		var ids = req.query.ids;
 		User.find({
 			'_id': { $in :ids}
 		}, "first_name last_name username", function (err, _users) {
@@ -230,7 +230,7 @@ Controller.prototype.get_favorites_profiles = function(req, res) {
 				res.end();
 			} else {
 				res.setHeader('Content-Type', "application/json");
-				res.send({users: _users});
+				res.send(_users);
 				res.end();
 			}
 		});

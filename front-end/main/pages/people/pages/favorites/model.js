@@ -2,15 +2,15 @@ var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
 
-var Favorites = Backbone.Model.extend({
+var FavoritesByCategory = Backbone.Collection.extend({
 	url: global.base_url + "favorites/my_favorites"
 });
 
 var Profiles = Backbone.Collection.extend({
-	url: global.base_url + "people/profiles"
+	url: global.base_url + "favorites/profiles"
 });
 
 export default {
-	Favorites: Favorites,
+	FavoritesByCategory: FavoritesByCategory,
 	Profiles: Profiles
 }

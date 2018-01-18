@@ -6,16 +6,23 @@ import favoritesMarkup from "main/pages/people/pages/favorites/partials/favorite
 var Favorites = Backbone.View.extend({
 	el: ".people-content",
 	render: function(options) {
-		this.options = options;
-		var favorites = new this.options.Favorites();
-		favorites.fetch({
-			success: function(favorites) {
-				
+		this.options = options
+		var favoritesByCategory = new this.options.FavoritesByCategory();
+		var view = this;
+		favoritesByCategory.fetch({
+			success: function(collectionObject) {
+				var _favoritesByCategory = collectionObject.models[0].attributes;
+				for (var category in _favoritesByCategory) {
+					var _ids = _favoritesByCategory[category];
+					var profiles = new view.options.Profiles();
+					profiles.fetch({ data: $.param({ids: _ids}),
+						success: function(modelObject) {
+							console.log(modelObject);
+						}
+					});
+				}
 			}
 		});
-		var template = _.template(favoritesMarkup);
-		
-		this.$el.html(template({}));
 	}
 });
 
