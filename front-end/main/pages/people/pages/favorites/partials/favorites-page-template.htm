@@ -14,29 +14,7 @@
   </style>
   </head>
   <body>
-    <div class="favorites-content">
-     	<% _.each(function(favorites_by_category, category_favorites) { %>
-     		<li class="list-group-item">
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-  					<span class="glyphicon glyphicon-user"></span>
-
-  				<span class="caret"></span>
-					</button>
-  					<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-  					<li><h1> <%= category_favorites.key %></h1></li>
-     				<% _.each(category_favorites.value, favorite) { %>
-            
-    					<li><a>Message</a></li>
-    					<li><a>Add to favorites</a></li>
-    					<li><a>Send web request</a></li>
-    					<li role="separator" class="divider"></li>
-    					<li><a>View profile</a></li>
-  					</ul>
-				</div>
-					<% }); %>
-			</li>
-  	<% }); %>
+    <div class="favorites-scroll-area">
     </div>
   </body>
 </html>
