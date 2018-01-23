@@ -10,7 +10,12 @@ var Profiles = Backbone.Collection.extend({
 	url: global.base_url + "favorites/profiles"
 });
 
+var AddCategory = Backbone.Model.extend({
+	url: global.base_url + "favorites/add_category"
+});
+
 export default {
 	FavoritesByCategory: FavoritesByCategory,
-	Profiles: Profiles
+	Profiles: Profiles,
+	AddCategory: AddCategory
 }

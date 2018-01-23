@@ -7,7 +7,8 @@ Controller.prototype.favorites = function() {
 	var favorites = new view.default.Favorites();
 	favorites.render({
 						FavoritesByCategory: model.default.FavoritesByCategory,
-						Profiles: model.default.Profiles
+						Profiles: model.default.Profiles,
+						AddCategory: model.default.AddCategory
 					});
 }
 
