@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<h1><%= categoryProfiles.category %></h1>
-		<button type="button">
+		<button class="remove-category" type="button" data-value="<%= categoryProfiles.category%>">
     		<span class="glyphicon glyphicon-minus"></span>
   		</button>
 		<% _.each(categoryProfiles.profiles, function(profile) { %>

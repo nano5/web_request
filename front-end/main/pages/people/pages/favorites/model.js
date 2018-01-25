@@ -14,8 +14,14 @@ var AddCategory = Backbone.Model.extend({
 	url: global.base_url + "favorites/add_category"
 });
 
+var RemoveCategory = Backbone.Model.extend({
+	urlRoot: global.base_url + "favorites/remove_category",
+	idAttribute: '_id'
+});
+
 export default {
 	FavoritesByCategory: FavoritesByCategory,
 	Profiles: Profiles,
-	AddCategory: AddCategory
+	AddCategory: AddCategory,
+	RemoveCategory: RemoveCategory
 }

@@ -156,7 +156,7 @@ Controller.prototype.post_favorites_add_category = function(req, res) {
 	}
 }
 
-Controller.prototype.delete_favorites_remove_category = function(req, res) {
+Controller.prototype.post_favorites_remove_category = function(req, res) {
 	if (req.session.loggedIn === true && req.body.category !== "generic") {
 		var _username = req.session.username;
 		var _category = req.body.category;
@@ -168,7 +168,7 @@ Controller.prototype.delete_favorites_remove_category = function(req, res) {
 				res.end();
 			} else {
 				if (user.favorites_by_category[_category]) {
-					user.favorites_by_category[_category] = null;
+					delete user.favorites_by_category[_category];
 					User.update({_id: user._id}, user, function(err) {
 						if (err) {
 							res.sendStatus(404);

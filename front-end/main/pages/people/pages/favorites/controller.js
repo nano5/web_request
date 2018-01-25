@@ -8,7 +8,8 @@ Controller.prototype.favorites = function() {
 	favorites.render({
 						FavoritesByCategory: model.default.FavoritesByCategory,
 						Profiles: model.default.Profiles,
-						AddCategory: model.default.AddCategory
+						AddCategory: model.default.AddCategory,
+						RemoveCategory: model.default.RemoveCategory
 					});
 }
 

@@ -749,9 +749,9 @@ describe("DELETE /favorites/remove_category", function() {
 				var removeCategoryJSON = {
 					"category": "IT"
 				};
-				request.delete({
+				request.post({
 					uri: base_url + "favorites/remove_category",
-					method: "DELETE",
+					method: "POST",
 					headers: {Cookie: signupCookie},
 					json: removeCategoryJSON
 				}, function(error, response, body) {
