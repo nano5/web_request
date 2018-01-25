@@ -901,3 +901,55 @@ describe("GET /favorites/profiles", function() {
 		});
 	});
 });
+
+describe("GET /favorites/categories", function() {
+	it("testing the to make sure the user can get his/her categories", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"username": "test",
+			"email": "test@example.com",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			var addCategoryJSON = {
+				"category": "IT"
+			};
+			request.post({
+				uri: base_url + "favorites/add_category",
+				method:" POST",
+				headers: {Cookie: signupCookie},
+				json: addCategoryJSON
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				request.get({
+					uri: base_url + "favorites/categories",
+					method: "GET",
+					headers: {Cookie: signupCookie},
+					json: {}
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie},
+						json: {}
+					},
+					function(error, response ,body) {
+						assert.equal(200, response.statusCode);
+						done();
+					});
+				});
+			});
+		});
+	});
+});

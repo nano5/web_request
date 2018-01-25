@@ -1,8 +1,6 @@
 var $ = require("jquery");
 var _ = require("underscore");
 var Backbone = require("backbone");
-var Profiles = require("main/pages/people/pages/find_people/model").default.Profiles;
-var FavoriteUser = require("main/pages/people/pages/find_people/model").default.FavoriteUser;
 import findPeopleMarkup from "main/pages/people/pages/find_people/partials/find_people-page-template.htm"
 import profileScrollCardMarkup from "main/pages/people/pages/find_people/partials/profile-scroll-card.htm"
 import messageCardMarkup from "main/pages/people/pages/find_people/partials/message-card.htm"
@@ -29,7 +27,8 @@ $.fn.serializeObject = function() {
 
 var FindPeople = Backbone.View.extend({
 	el: ".people-content",
-	render: function(Profiles) {
+	render: function(options) {
+		this.options = options;
 		var template = _.template(findPeopleMarkup);
 		this.$el.html(template({}));
 	},
@@ -40,7 +39,7 @@ var FindPeople = Backbone.View.extend({
 	},
 	findPeople: function(ev) {
 		var searchText = $(ev.currentTarget).serializeObject().search_text;
-		var profiles = new Profiles();
+		var profiles = new this.options.Profiles();
 		var view = this;
 		profiles.fetch({ data: $.param({ queryString: searchText}),
 			success: function(_profiles) {
@@ -66,7 +65,14 @@ var FindPeople = Backbone.View.extend({
 			this.$el.find(".profiles-action-area").html(messageCardTemplate(profileJSON));
 		} else if (action === "add_to_favorites") {
 			var addToFavoritesTemplate = _.template(addToFavoritesMarkup);
-			this.$el.find(".profiles-action-area").html(addToFavoritesTemplate(profileJSON));
+			var _categories = new this.options.Categories();
+			var view = this;
+			_categories.fetch({
+				success: function(modelObject) {
+					profileJSON.categories = modelObject.attributes.categories;
+					view.$el.find(".profiles-action-area").html(addToFavoritesTemplate(profileJSON));
+				}
+			});
 		} else if (action === "send_web_request") {
 			var sendWebRequestTemplate = _.template(sendWebRequestMarkup);
 			this.$el.find(".profiles-action-area").html(sendWebRequestTemplate(profileJSON));
@@ -79,7 +85,7 @@ var FindPeople = Backbone.View.extend({
 	},
 	addUserToFavorites: function(ev) {
 		var addUserToFavoritesData = $(ev.currentTarget).serializeObject();
-		var favoriteUser = new FavoriteUser();
+		var favoriteUser = new this.options.FavoriteUser();
 		var view = this;
 		favoriteUser.save(addUserToFavoritesData, {
 			success: function() {

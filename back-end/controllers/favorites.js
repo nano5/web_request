@@ -240,6 +240,31 @@ Controller.prototype.get_favorites_profiles = function(req, res) {
 	}
 }
 
+Controller.prototype.get_favorites_categories = function(req, res) {
+	if (req.session.loggedIn === true) {
+		var _username = req.session.username;
+		User.findOne({username: _username}).select("favorites_by_category").lean().exec(function(err, user) {
+			if (err) {
+				res.sendStatus(404);
+				res.end();
+			} else {
+				if (user) {
+					var categories = Object.keys(user.favorites_by_category);
+					res.setHeader("Content-Type", "application/json");
+					res.send({categories: categories});
+					res.end();
+				} else {
+					res.sendStatus(400);
+					res.end();
+				}
+			}
+		});
+	} else {
+		res.sendStatus(404);
+		res.end();
+	}
+}
+
 function idInArray(id, array) {
 	for (var i = 0; i < array.length; ++i) {
 		if (id == array[i]) {

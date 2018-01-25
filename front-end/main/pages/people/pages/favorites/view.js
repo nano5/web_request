@@ -33,7 +33,6 @@ var Favorites = Backbone.View.extend({
 				view.$el.html(favoritesPageTemplate({}));
 				for (const category in _favoritesByCategory) {
 					var _ids = _favoritesByCategory[category];
-					console.log(category);
 					var profiles = new view.options.Profiles();
 					profiles.fetch({ data: $.param({ids: _ids}),
 						success: function(collectionObject) {
@@ -70,6 +69,7 @@ var Favorites = Backbone.View.extend({
 		var removeCategory = new this.options.RemoveCategory();
 		removeCategory.save({category: category} ,{
 			success: function() {
+
 			}
 		});
 		location.reload();
