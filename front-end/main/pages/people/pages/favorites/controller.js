@@ -9,7 +9,8 @@ Controller.prototype.favorites = function() {
 						FavoritesByCategory: model.default.FavoritesByCategory,
 						Profiles: model.default.Profiles,
 						AddCategory: model.default.AddCategory,
-						RemoveCategory: model.default.RemoveCategory
+						RemoveCategory: model.default.RemoveCategory,
+						RemoveUser: model.default.RemoveUser
 					});
 }
 

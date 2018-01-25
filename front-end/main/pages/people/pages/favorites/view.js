@@ -50,7 +50,8 @@ var Favorites = Backbone.View.extend({
 	},
 	events: {
 		"submit .add-category-form": "addCategory",
-		"click .remove-category": "removeCategory"
+		"click .remove-category": "removeCategory",
+		"click .remove-user-action-button": "removeUser"
 	},
 	addCategory: function(ev) {
 		var categoryInformation = $(ev.currentTarget).serializeObject();
@@ -58,21 +59,31 @@ var Favorites = Backbone.View.extend({
 		var addCategory = new this.options.AddCategory();
 		addCategory.save({category: category}, {
 			success: function() {
-				
+				location.reload();
 			}
 		});
-		location.reload();
 		return false;
 	},
 	removeCategory: function(ev) {
-		var category = $(ev.currentTarget).data('value');
+		var category = $(ev.currentTarget).data("value");
 		var removeCategory = new this.options.RemoveCategory();
 		removeCategory.save({category: category} ,{
 			success: function() {
-
+				location.reload();
 			}
 		});
-		location.reload();
+		return false;
+	},
+	removeUser: function(ev) {
+		var other_username = $(ev.currentTarget).data("value1");
+		var category = $(ev.currentTarget).data("value2");
+		var removeUser = new this.options.RemoveUser();
+		removeUser.save({category: category, other_username: other_username}, {
+			success: function() {
+				console.log("user removed");
+				location.reload();
+			}
+		});
 		return false;
 	}
 });

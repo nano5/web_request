@@ -60,7 +60,7 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 	}
 }
 
-Controller.prototype.delete_favorites_remove_user = function(req, res) {
+Controller.prototype.post_favorites_remove_user = function(req, res) {
 	if (req.session.loggedIn === true) {
 		var _username = req.session.username;
 		var _other_username = req.body.other_username;

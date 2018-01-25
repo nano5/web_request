@@ -591,9 +591,9 @@ describe("POST /favorites/remove_user", function() {
 						"category": "generic",
 						"other_username": "test2"
 					}
-					request.delete({
+					request.post({
 						uri: base_url + "favorites/remove_user",
-						method: "DELETE",
+						method: "POST",
 						headers: {Cookie: signupCookie1},
 						json: removeUserJSON
 					}, function(error, response, body) {
@@ -684,9 +684,9 @@ describe("DELETE /favorites/remove_user", function() {
 							"category": "IT",
 							"other_username": "test2"
 						}
-						request.delete({
+						request.post({
 							uri: base_url + "favorites/remove_user",
-							method: "DELETE",
+							method: "POST",
 							headers: {Cookie: signupCookie1},
 							json: removeUserJSON
 						}, function(error, response, body) {
@@ -953,3 +953,4 @@ describe("GET /favorites/categories", function() {
 		});
 	});
 });
+
