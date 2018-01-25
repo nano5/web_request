@@ -5,7 +5,13 @@ function Controller(){};
 
 Controller.prototype.favorites = function() {
 	var favorites = new view.default.Favorites();
-	favorites.render(model.default.Profiles);
+	favorites.render({
+						FavoritesByCategory: model.default.FavoritesByCategory,
+						Profiles: model.default.Profiles,
+						AddCategory: model.default.AddCategory,
+						RemoveCategory: model.default.RemoveCategory,
+						RemoveUser: model.default.RemoveUser
+					});
 }
 
 var _controller = new Controller();

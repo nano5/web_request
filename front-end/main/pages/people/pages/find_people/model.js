@@ -10,7 +10,12 @@ var FavoriteUser = Backbone.Model.extend({
 	url: global.base_url + "favorites/add_user"
 });
 
+var Categories = Backbone.Model.extend({
+	url: global.base_url + "favorites/categories"
+});
+
 export default {
 	Profiles: Profiles,
-	FavoriteUser: FavoriteUser
+	FavoriteUser: FavoriteUser,
+	Categories: Categories
 }

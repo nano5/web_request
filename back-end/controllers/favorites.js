@@ -7,7 +7,7 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 		var _username = req.session.username;
 		var _other_username = req.body.other_username;
 		var _category = req.body.category;
-		User.findOne({username: _username}, "favorites_by_category _id", function(err, user) {
+		User.findOne({username: _username}).select("favorites_by_category _id").lean().exec(function(err, user) {
 			if (err) {
 				console.log(err);
 				res.sendStatus(404);
@@ -20,33 +20,28 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 						res.end();
 					} else {
 						if (other_user) {
-							var foundCategory = false;
-							for (var i = 0; i < user.favorites_by_category.length; ++i) {
-								if (user.favorites_by_category[i].category === _category) {
-									if (!idInArray(other_user._id, user.favorites_by_category[i].favorites)) {
-										user.favorites_by_category[i].favorites.push(other_user._id);
-										user.save(function(err) {
-											if (err) {
-												console.log(err);
-												res.sendStatus(404);
-												res.end();
-											} else {
-												res.setHeader("Content-Type", "application/json");
-												res.send({});
-												res.end();
-											}
-										});
-									} else {
-										res.sendStatus(400);
-										res.end();
-									}
-									foundCategory = true;
-									break;
-								}
-							}
+							if (user.favorites_by_category[_category]) {
+								if (!idInArray(other_user._id, user.favorites_by_category[_category])) {
+									user.favorites_by_category[_category].push(other_user._id);
+									User.update({_id: user._id}, user, function(err) {
+										if (err) {
+											console.log(err);
+											res.sendStatus(404);
+											res.end();
+										} else {
+											res.setHeader("Content-Type", "application/json");
+											res.send({});
+											res.end();
+										}
+									});
 
-							if (!foundCategory) {
-								console.log("could not find category " + _category);
+								} else {
+									console.log("user is already in category " + _category);
+									res.sendStatus(400);
+									res.end();
+								}
+							} else {
+								console.log("here! could not find category " + _category);
 								res.sendStatus(404);
 								res.end();
 							}
@@ -70,7 +65,7 @@ Controller.prototype.post_favorites_remove_user = function(req, res) {
 		var _username = req.session.username;
 		var _other_username = req.body.other_username;
 		var _category = req.body.category;
-		User.findOne({username: _username}, "favorites_by_category", function(err, user) {
+		User.findOne({username: _username}).select("favorites_by_category").lean().exec(function(err, user) {
 			if (err) {
 				console.log(err);
 				res.sendStatus(404);
@@ -84,40 +79,32 @@ Controller.prototype.post_favorites_remove_user = function(req, res) {
 							res.end();
 						} else {
 							if (other_user) {
-								var foundCategory = false;
-								for (var i = 0; i < user.favorites_by_category; ++i) {
-									if (_category === user.favorites_by_category[i].category) {
-										var index = null;
-										if ((index = idIndexInArray(other_user._id, user.favorites_by_category[i].favorites)) >= 0) {
-											user.favorites_by_category[i].favorites.splice(index, 1);
-											user.save(function(err) {
-												if (err) {
-													console.log(err);
-													res.sendStatus(404);
-													res.end();
-												} else {
-													res.setHeader("Content-Type", "application/json");
-													res.send({});
-													res.end();
-												}
-											});
-										} else {
-											console.log("could not find user in " + user.favorites_by_category[i].category);
-											res.sendStatus(404);
-											res.end();
-										}
+								if (user.favorites_by_category[_category]) {
+									var index = idInArray(other_user._id, user.favorites_by_category[_category]);
 
-										foundCategory = true;
-										break;
+									if (index >= 0) {
+										user.favorites_by_category[_category].splice(index, 1);
+										User.update({_id: user._id}, user, function(err) {
+											if (err) {
+												console.log(err);
+												res.sendStatus(404);
+												res.end();
+											} else {
+												res.setHeader("Content-Type", "application/json");
+												res.send({});
+												res.end();
+											}
+										});
+									} else {
+										console.log("could not find user " + _other_username);
+										res.sendStatus(400);
+										res.end();
 									}
-
-								}
-								if (!foundCategory) {
-									console.log("could not find category " + _category);
-									res.sendStatus(404);
+								} else {
+									console.log("could not find category " + "_category");
+									res.sendStatus(400);
 									res.end();
 								}
-
 
 							} else {
 								console.log(_other_username + " does not exist");
@@ -142,26 +129,134 @@ Controller.prototype.post_favorites_add_category = function(req, res) {
 	if (req.session.loggedIn === true) {
 		var _username = req.session.username;
 		var _category = req.body.category;
-		User.findOne({username: _username}, "favorites_by_category", function(err, user) {
+
+		User.findOne({username: _username}).select("favorites_by_category _id").lean().exec( function(err, user) {
 			if (err) {
 				console.log(err);
 				res.sendStatus(404);
 				res.end();
 			} else {
-				user.favorites_by_category.push({
-					category: _category,
-					favorites: []
-				});
-				user.save(function(err) {
+				user.favorites_by_category[_category] = [];
+				User.update({_id: user._id}, {$set: user}, function(err) {
 					if (err) {
 						console.log(err);
-						res.sendStatus(404);
+						res.sendStatus(400);
 						res.end();
 					} else {
-						res.sendStatus(200);
+						res.setHeader("Content-Type", "application/json");
+						res.send({});
 						res.end();
 					}
 				});
+			}
+		});
+	} else {
+		res.sendStatus(404);
+		res.end();
+	}
+}
+
+Controller.prototype.post_favorites_remove_category = function(req, res) {
+	if (req.session.loggedIn === true && req.body.category !== "generic") {
+		var _username = req.session.username;
+		var _category = req.body.category;
+
+		User.findOne({username: _username}).select("favorites_by_category _id").lean().exec(function(err, user) {
+			if (err) {
+				console.log(err);
+				res.sendStatus(404);
+				res.end();
+			} else {
+				if (user.favorites_by_category[_category]) {
+					delete user.favorites_by_category[_category];
+					User.update({_id: user._id}, user, function(err) {
+						if (err) {
+							res.sendStatus(404);
+							res.end()
+						} else {
+							res.setHeader("Content-Type", "application/json");
+							res.send({});
+							res.end();
+						}
+					});
+				} else {
+					console.log("could not find category " + _category);
+					res.sendStatus(400);
+					res.end();
+				}
+
+			}
+		});
+	} else {
+		res.sendStatus(404);
+		res.end();
+	}
+}
+
+Controller.prototype.get_favorites_my_favorites = function(req, res) {
+	if (req.session.loggedIn === true) {
+		var _username = req.session.username;
+		User.findOne({username: _username}, function(err, user) {
+			if (err) {
+				console.log(err);
+				res.sendStatus(404);
+				res.end();
+			} else {
+				if (user) {
+					res.setHeader("Content-Type", "application/json");
+					res.send(user.favorites_by_category);
+					res.end();
+				} else {
+					console.log("user " + _username + " does not exist");
+					res.sendStatus(404);
+					res.end();
+				}
+			}
+		});
+	} else {
+		res.sendStatus(404);
+		res.end();
+	}
+}
+
+Controller.prototype.get_favorites_profiles = function(req, res) {
+	if (req.session.loggedIn === true) {
+		var ids = req.query.ids;
+		User.find({
+			'_id': { $in :ids}
+		}, "first_name last_name username", function (err, _users) {
+			if (err) {
+				res.sendStatus(404);
+				res.end();
+			} else {
+				res.setHeader('Content-Type', "application/json");
+				res.send(_users);
+				res.end();
+			}
+		});
+	} else {
+		res.sendStatus(404);
+		res.end();
+	}
+}
+
+Controller.prototype.get_favorites_categories = function(req, res) {
+	if (req.session.loggedIn === true) {
+		var _username = req.session.username;
+		User.findOne({username: _username}).select("favorites_by_category").lean().exec(function(err, user) {
+			if (err) {
+				res.sendStatus(404);
+				res.end();
+			} else {
+				if (user) {
+					var categories = Object.keys(user.favorites_by_category);
+					res.setHeader("Content-Type", "application/json");
+					res.send({categories: categories});
+					res.end();
+				} else {
+					res.sendStatus(400);
+					res.end();
+				}
 			}
 		});
 	} else {
@@ -179,7 +274,7 @@ function idInArray(id, array) {
 	return false;
 }
 
-function inIndexInArray(id, array) {
+function idIndexInArray(id, array) {
 	for (var i = 0; i < array.length; ++i) {
 		if (id == array[i]) {
 			return i;

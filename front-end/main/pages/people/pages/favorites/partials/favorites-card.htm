@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<style>
+		.dropdown-menu>li {
+    		display: block;
+    		padding: 3px 20px;
+    		clear: both;
+    		font-weight: 400;
+    		line-height: 1.42857143;
+    		color: #333;
+    		white-space: nowrap;
+    		border: none;
+		}
+	</style>
+	</head>
+	<body>
+		<h1><%= categoryProfiles.category %></h1>
+		<button class="remove-category" type="button" data-value="<%= categoryProfiles.category%>">
+    		<span class="glyphicon glyphicon-minus"></span>
+  		</button>
+		<% _.each(categoryProfiles.profiles, function(profile) { %>
+    			<li class="list-group-item">
+    				<div class="dropdown">
+    					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      					<span class="glyphicon glyphicon-user"></span>
+      					<%= profile.get("first_name") %> <%= profile.get("last_name") %> 
+       					(<%= profile.get("username")%>)
+      				<span class="caret"></span>
+    					</button>
+      					<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                
+        					<li><a> Message</a></li>
+        					<li><a class="remove-user-action-button" name="action_button" data-value1="<%= profile.get("username")%>" data-value2="<%= categoryProfiles.category %>"> Remove from <%=categoryProfiles.category%></a></li>
+        					<li><a> Send web request</a></li>
+        					<li role="separator" class="divider"></li>
+        					<li><a>View profile</a></li>
+      					</ul>
+  				</div>
+    			</li>
+  		<% }); %>
+	</body>
+</html>

@@ -7,7 +7,9 @@
         <label>Select Category for <%= first_name %> <%= last_name %> (<%= username %>)</label>
         
         <select name="category" class="form-control">
-          <option value="generic">generic</option>
+          <% _.each(categories, function(category) { %>
+          <option value="<%= category %>"><%= category %></option>
+          <% }); %>
         </select>
 
         <input type="hidden" name="other_username" value="<%= username %>">

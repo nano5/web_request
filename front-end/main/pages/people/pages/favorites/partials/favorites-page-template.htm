@@ -1,9 +1,55 @@
 <html>
   <head>
+  	<style>
+      .favorites-scroll-area {
+        overflow: scroll;
+        height: 600px;
+        min-width: 230px;
+        display: inline-block;
+        float: left;
+      }
+      .favorites-action-area {
+        position: relative;
+        height: 600px;
+        width: 800px;
+        float: left;
+        border: solid #e7e7e7;
+      }
+
+      .same-line {
+      display: inline-block;
+      }
+  </style>
   </head>
   <body>
-    <div class="favorites-content">
-      
+  <div>
+    <h1>  Add Category </h1>
+    <button type="button" data-toggle="modal" data-target="#add-category-modal">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+    <div class="modal fade" id="add-category-modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Category</h4>
+          </div>
+          <div class="modal-body">
+            <form class="add-category-form">
+              <input type="text" placeholder="Category Name" name="category">
+              </input>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="favorites-scroll-area">
+  </div>
+  <div class="favorites-action-area">
+  </div>
   </body>
 </html>

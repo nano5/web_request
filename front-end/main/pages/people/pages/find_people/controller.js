@@ -5,7 +5,10 @@ function Controller(){};
 
 Controller.prototype.findPeople = function() {
 	var findPeople = new view.default.FindPeople();
-	findPeople.render(model.default.Profiles);
+	findPeople.render({
+		Profiles: model.default.Profiles,
+		FavoriteUser: model.default.FavoriteUser,
+		Categories: model.default.Categories});
 }
 
 var _controller = new Controller();

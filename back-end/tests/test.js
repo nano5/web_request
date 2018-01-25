@@ -543,3 +543,414 @@ describe("POST /favorites/add_category", function() {
 		});
 	});
 });
+
+describe("POST /favorites/remove_user", function() {
+	it("going to remove user from generic category", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"email": "test1@example.com",
+			"username": "test1",
+			"password": "password"
+		};
+
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		}, function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"email": "test2@example.com",
+				"username": "test2",
+				"password": "password"
+			};
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addUserJSON = {
+					"category": "generic",
+					"other_username": "test2"
+				}
+				request.post({
+					uri: base_url + "favorites/add_user",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addUserJSON
+				}, function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					var removeUserJSON = {
+						"category": "generic",
+						"other_username": "test2"
+					}
+					request.post({
+						uri: base_url + "favorites/remove_user",
+						method: "POST",
+						headers: {Cookie: signupCookie1},
+						json: removeUserJSON
+					}, function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						request.post({
+							uri: base_url + "signout",
+							method: "POST",
+							headers: {Cookie: signupCookie1},
+							json: {}
+						}, 
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie2},
+								json: {}
+							},
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});
+
+describe("DELETE /favorites/remove_user", function() {
+	it("going to remove user from IT category", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"email": "test1@example.com",
+			"username": "test1",
+			"password": "password"
+		};
+
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		}, function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"email": "test2@example.com",
+				"username": "test2",
+				"password": "password"
+			};
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addCategoryJSON = {
+					"category": "IT"
+				}
+
+				request.post({
+					uri: base_url + "favorites/add_category",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addCategoryJSON
+				}, 
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					var addUserJSON = {
+					"category": "IT",
+					"other_username": "test2"
+					}
+					request.post({
+						uri: base_url + "favorites/add_user",
+						method: "POST",
+						headers: {Cookie: signupCookie1},
+						json: addUserJSON
+					}, 
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						var removeUserJSON = {
+							"category": "IT",
+							"other_username": "test2"
+						}
+						request.post({
+							uri: base_url + "favorites/remove_user",
+							method: "POST",
+							headers: {Cookie: signupCookie1},
+							json: removeUserJSON
+						}, function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie1},
+								json: {}
+							}, 
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								request.post({
+									uri: base_url + "signout",
+									method: "POST",
+									headers: {Cookie: signupCookie2},
+									json: {}
+								},
+								function(error, response, body) {
+									assert.equal(200, response.statusCode);
+									done();
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});
+
+describe("DELETE /favorites/remove_category", function() {
+	it("going to remove category from the user", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"email": "test@example.com",
+			"username": "test",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			var addCategoryJSON = {
+				"category": "IT"
+			};
+			request.post({
+				uri: base_url + "favorites/add_category",
+				method: "POST",
+				headers: {Cookie: signupCookie},
+				json: addCategoryJSON
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var removeCategoryJSON = {
+					"category": "IT"
+				};
+				request.post({
+					uri: base_url + "favorites/remove_category",
+					method: "POST",
+					headers: {Cookie: signupCookie},
+					json: removeCategoryJSON
+				}, function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie},
+						json: {}
+					},
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						done();
+					});
+				});
+			});
+		});
+	});
+});
+
+describe("GET /favorites/my_favorites", function() {
+	it("going to grab all the users favorites", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"email": "test@example.com",
+			"username": "test",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		}, function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			request.get({
+				uri: base_url + "favorites/my_favorites",
+				method: "GET",
+				headers: {Cookie: signupCookie},
+				json: {}
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				request.post({
+					uri: base_url + "signout",
+					method: "POST",
+					headers: {Cookie: signupCookie},
+					json: {}
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					done();
+				});
+			});
+		});
+	});
+});
+
+describe("GET /favorites/profiles", function() {
+	it("going to get list of users by id then retrieve their profiles", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"username": "test1",
+			"email": "test1@example.com",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "test2",
+				"last_name": "test2",
+				"username": "test2",
+				"email": "test2@example.com",
+				"password": "password"
+			}
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			}, 
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var addUserJSON = {
+					"category": "generic",
+					"other_username": "test2"
+				}
+				request.post({
+					uri: base_url + "favorites/add_user",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: addUserJSON
+				}, 
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.get({
+						uri: base_url + "favorites/my_favorites",
+						method: "GET",
+						headers: {Cookie: signupCookie1},
+						json:{}
+					}, 
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						var _ids = []
+						for (var key in body.favorites_by_category) {
+							_ids.push(body.favorites_by_category[key]);
+						}
+						request.get({
+							uri: base_url + "favorites/profiles",
+							method: "GET",
+							headers: {Cookie: signupCookie1},
+							json: {ids: _ids}
+						}, 
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							request.post({
+								uri: base_url + "signout",
+								method: "POST",
+								headers: {Cookie: signupCookie1},
+								json: {}
+							},
+							function(error, response, body) {
+								assert.equal(200, response.statusCode);
+								request.post({
+									uri: base_url + "signout",
+									method: "POST",
+									headers: {Cookie: signupCookie2},
+									json: {}
+								}, 
+								function(error, response, body) {
+									assert.equal(200, response.statusCode);
+									done();
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});
+
+describe("GET /favorites/categories", function() {
+	it("testing the to make sure the user can get his/her categories", function(done) {
+		var signupJSON = {
+			"first_name": "test",
+			"last_name": "test",
+			"username": "test",
+			"email": "test@example.com",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie = response.headers['set-cookie'].pop().split(';')[0];
+			var addCategoryJSON = {
+				"category": "IT"
+			};
+			request.post({
+				uri: base_url + "favorites/add_category",
+				method:" POST",
+				headers: {Cookie: signupCookie},
+				json: addCategoryJSON
+			},
+			function(error, response, body) {
+				assert.equal(200, response.statusCode);
+				request.get({
+					uri: base_url + "favorites/categories",
+					method: "GET",
+					headers: {Cookie: signupCookie},
+					json: {}
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie},
+						json: {}
+					},
+					function(error, response ,body) {
+						assert.equal(200, response.statusCode);
+						done();
+					});
+				});
+			});
+		});
+	});
+});
+
