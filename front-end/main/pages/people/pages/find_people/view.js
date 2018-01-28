@@ -88,6 +88,7 @@ var FindPeople = Backbone.View.extend({
 		var favoriteUser = new this.options.FavoriteUser();
 		var view = this;
 		favoriteUser.save(addUserToFavoritesData, {
+			dataType: "text",
 			success: function() {
 				console.log("added user to favorites");
 				alert(addUserToFavoritesData.other_username + " has been added to " + addUserToFavoritesData.category);

@@ -29,8 +29,8 @@ Controller.prototype.post_favorites_add_user = function(req, res) {
 											res.sendStatus(404);
 											res.end();
 										} else {
-											res.setHeader("Content-Type", "application/json");
-											res.send({});
+		
+											res.sendStatus(200);
 											res.end();
 										}
 									});
@@ -90,8 +90,7 @@ Controller.prototype.post_favorites_remove_user = function(req, res) {
 												res.sendStatus(404);
 												res.end();
 											} else {
-												res.setHeader("Content-Type", "application/json");
-												res.send({});
+												res.sendStatus(200);
 												res.end();
 											}
 										});
@@ -144,7 +143,7 @@ Controller.prototype.post_favorites_add_category = function(req, res) {
 						res.end();
 					} else {
 						res.setHeader("Content-Type", "application/json");
-						res.send({});
+						res.sendStatus(200);
 						res.end();
 					}
 				});
@@ -174,8 +173,7 @@ Controller.prototype.post_favorites_remove_category = function(req, res) {
 							res.sendStatus(404);
 							res.end()
 						} else {
-							res.setHeader("Content-Type", "application/json");
-							res.send({});
+							res.sendStatus(200);
 							res.end();
 						}
 					});

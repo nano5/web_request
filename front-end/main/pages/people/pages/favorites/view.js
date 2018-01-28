@@ -58,6 +58,7 @@ var Favorites = Backbone.View.extend({
 		var category = categoryInformation.category;
 		var addCategory = new this.options.AddCategory();
 		addCategory.save({category: category}, {
+			dataType: "text",
 			success: function() {
 				location.reload();
 			}
@@ -68,6 +69,7 @@ var Favorites = Backbone.View.extend({
 		var category = $(ev.currentTarget).data("value");
 		var removeCategory = new this.options.RemoveCategory();
 		removeCategory.save({category: category} ,{
+			dataType: "text",
 			success: function() {
 				location.reload();
 			}
@@ -79,6 +81,7 @@ var Favorites = Backbone.View.extend({
 		var category = $(ev.currentTarget).data("value2");
 		var removeUser = new this.options.RemoveUser();
 		removeUser.save({category: category, other_username: other_username}, {
+			dataType: "text",
 			success: function() {
 				console.log("user removed");g
 				location.reload();
