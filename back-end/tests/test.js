@@ -954,3 +954,70 @@ describe("GET /favorites/categories", function() {
 	});
 });
 
+describe("POST /messages/send_message", function() {
+	it("going to send a message to another user", function(done) {
+		var signupJSON1 = {
+			"first_name": "test1",
+			"last_name": "test1",
+			"username": "test1",
+			"email": "test1@example.com",
+			"password": "password"
+		};
+		request.post({
+			uri: base_url + "signup",
+			method: "POST",
+			json: signupJSON1
+		},
+		function(error, response, body) {
+			assert.equal(200, response.statusCode);
+			var signupCookie1 = response.headers['set-cookie'].pop().split(';')[0];
+			var signupJSON2 = {
+				"first_name": "tes2",
+				"last_name": "tes2",
+				"username": "tes2",
+				"email": "tes2@example.com",
+				"password": "password"
+			};
+			request.post({
+				uri: base_url + "signup",
+				method: "POST",
+				json: signupJSON2
+			},
+			function(error, response, body) {
+				var signupCookie2 = response.headers['set-cookie'].pop().split(';')[0];
+				var sendMessageJSON = {
+					"other_username": "tes2",
+					"message": "Hello World"
+				};
+				request.post({
+					uri: base_url + "messages/send_message",
+					method: "POST",
+					headers: {Cookie: signupCookie1},
+					json: sendMessageJSON
+				},
+				function(error, response, body) {
+					assert.equal(200, response.statusCode);
+					request.post({
+						uri: base_url + "signout",
+						method: "POST",
+						headers: {Cookie: signupCookie1},
+						json: {}
+					},
+					function(error, response, body) {
+						assert.equal(200, response.statusCode);
+						request.post({
+							uri: base_url+ "signout",
+							method: "POST",
+							headers: {Cookie: signupCookie2},
+							json: {}
+						},
+						function(error, response, body) {
+							assert.equal(200, response.statusCode);
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+});

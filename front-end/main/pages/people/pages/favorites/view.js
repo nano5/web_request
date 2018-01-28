@@ -80,7 +80,7 @@ var Favorites = Backbone.View.extend({
 		var removeUser = new this.options.RemoveUser();
 		removeUser.save({category: category, other_username: other_username}, {
 			success: function() {
-				console.log("user removed");
+				console.log("user removed");g
 				location.reload();
 			}
 		});

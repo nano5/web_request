@@ -13,6 +13,7 @@ var authenticationRouter = require("./routes/authentication").authenticationRout
 var profileRouter = require("./routes/profile").profileRouter;
 var peopleRouter = require("./routes/people").peopleRouter;
 var favoritesRouter = require("./routes/favorites").favoritesRouter;
+var messagesRouter = require("./routes/messages").messagesRouter;
 var app = express();
 global.base_url = "http://localhost:8080/";
 
@@ -40,6 +41,7 @@ app.use(authenticationRouter);
 app.use(profileRouter);
 app.use(peopleRouter);
 app.use(favoritesRouter);
+app.use(messagesRouter);
 // at this point use comet
 
 

@@ -56,6 +56,9 @@ Controller.prototype.post_signup = function(req, res) {
 									},
 									favorites_by_category: {
 										generic: []
+									},
+									conversations: {
+			
 									}
 								});
 								user.save(function(err) {

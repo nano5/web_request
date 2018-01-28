@@ -18,13 +18,22 @@ var userSchema = new mongoose.Schema({
 	},
 	favorites_by_category: {
 		generic: [String]
+	},
+	conversations: {
+
 	}
 
-}, {collection: "users",
+}, {
+	collection: "users",
 	usePushEach: true,
-	strict: false
+	strict: false,
+	minimize: false
 });
 
 var _User = mongoose.model("user", userSchema, "users");
 
-module.exports = {User:_User};
+module.exports = {
+	User:_User
+};
+
+
