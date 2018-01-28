@@ -14,7 +14,6 @@ Controller.prototype.get_people_profiles = function(req, res) {
 		where("username").ne(req.session.username);
 
 		query.exec(function(err, result) {
-			console.log(result);
 			res.setHeader("Content-Type", "application/json");
 			res.send(result);
 			res.end();

@@ -83,7 +83,7 @@ var Favorites = Backbone.View.extend({
 		removeUser.save({category: category, other_username: other_username}, {
 			dataType: "text",
 			success: function() {
-				console.log("user removed");g
+				console.log("user removed");
 				location.reload();
 			}
 		});

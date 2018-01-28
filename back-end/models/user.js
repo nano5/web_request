@@ -17,7 +17,7 @@ var userSchema = new mongoose.Schema({
 		bio: String
 	},
 	favorites_by_category: {
-		generic: [String]
+		// generic: [String]
 	},
 	conversations: {
 
