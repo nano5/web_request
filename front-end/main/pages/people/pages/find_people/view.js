@@ -34,7 +34,10 @@ var FindPeople = Backbone.View.extend({
 	},
 	events: {
 		"submit .search-people-form": "findPeople",
-		"click .people-action_button": "executeAction",
+		"click .send-message-action_button": "sendMessageAction",
+		"click .add-to-favorites-action_button": "addToFavoritesAction",
+		"click .send-web-request-action_button": "sendWebRequestAction",
+		"click .view-profile-action_button": "viewProfileAction",
 		"submit .add-user-to-favorites": "addUserToFavorites"
 	},
 	findPeople: function(ev) {
@@ -50,21 +53,28 @@ var FindPeople = Backbone.View.extend({
 		});
 		return false;
 	},
-	executeAction: function(ev) {
-		var _first_name = $(ev.currentTarget).attr("data-value1");
-		var _last_name = $(ev.currentTarget).attr("data-value2");
-		var _username = $(ev.currentTarget).attr("data-value3");
+	sendMessageAction: function(ev) {
+		var _first_name = $(ev.currentTarget).data("value1");
+		var _last_name = $(ev.currentTarget).data("value2");
+		var _username = $(ev.currentTarget).data("value3");
 		var profileJSON = {
 			first_name: _first_name,
 			last_name: _last_name,
 			username: _username
-		}
-		var action = $(ev.currentTarget).attr("data-value4");
-		if (action === "message") {
-			var messageCardTemplate = _.template(messageCardMarkup);
-			this.$el.find(".profiles-action-area").html(messageCardTemplate(profileJSON));
-		} else if (action === "add_to_favorites") {
-			var addToFavoritesTemplate = _.template(addToFavoritesMarkup);
+		};
+		var messageCardTemplate = _.template(messageCardMarkup);
+		this.$el.find(".profiles-action-area").html(messageCardTemplate(profileJSON));
+	},
+	addToFavoritesAction: function(ev) {
+		var _first_name = $(ev.currentTarget).data("value1");
+		var _last_name = $(ev.currentTarget).data("value2");
+		var _username = $(ev.currentTarget).data("value3");
+		var profileJSON = {
+			first_name: _first_name,
+			last_name: _last_name,
+			username: _username
+		};
+		var addToFavoritesTemplate = _.template(addToFavoritesMarkup);
 			var _categories = new this.options.Categories();
 			var view = this;
 			_categories.fetch({
@@ -73,15 +83,30 @@ var FindPeople = Backbone.View.extend({
 					view.$el.find(".profiles-action-area").html(addToFavoritesTemplate(profileJSON));
 				}
 			});
-		} else if (action === "send_web_request") {
-			var sendWebRequestTemplate = _.template(sendWebRequestMarkup);
-			this.$el.find(".profiles-action-area").html(sendWebRequestTemplate(profileJSON));
-		} else {
-			var viewProfileTemplate = _.template(viewProfileMarkup);
-			this.$el.find(".profiles-action-area").html(viewProfileTemplate(profileJSON));
-		}
-		
-		return true;
+	},
+	sendWebRequestAction: function(ev) {
+		var _first_name = $(ev.currentTarget).data("value1");
+		var _last_name = $(ev.currentTarget).data("value2");
+		var _username = $(ev.currentTarget).data("value3");
+		var profileJSON = {
+			first_name: _first_name,
+			last_name: _last_name,
+			username: _username
+		};
+		var sendWebRequestTemplate = _.template(sendWebRequestMarkup);
+		this.$el.find(".profiles-action-area").html(sendWebRequestTemplate(profileJSON));
+	},
+	viewProfileAction: function(ev) {
+		var _first_name = $(ev.currentTarget).data("value1");
+		var _last_name = $(ev.currentTarget).data("value2");
+		var _username = $(ev.currentTarget).data("value3");
+		var profileJSON = {
+			first_name: _first_name,
+			last_name: _last_name,
+			username: _username
+		};
+		var viewProfileTemplate = _.template(viewProfileMarkup);
+		this.$el.find(".profiles-action-area").html(viewProfileTemplate(profileJSON));
 	},
 	addUserToFavorites: function(ev) {
 		var addUserToFavoritesData = $(ev.currentTarget).serializeObject();
