@@ -38,6 +38,7 @@ var FindPeople = Backbone.View.extend({
 		"click .add-to-favorites-action_button": "addToFavoritesAction",
 		"click .send-web-request-action_button": "sendWebRequestAction",
 		"click .view-profile-action_button": "viewProfileAction",
+		"submit .send-message-form": "sendMessage",
 		"submit .add-user-to-favorites": "addUserToFavorites"
 	},
 	findPeople: function(ev) {
@@ -107,6 +108,20 @@ var FindPeople = Backbone.View.extend({
 		};
 		var viewProfileTemplate = _.template(viewProfileMarkup);
 		this.$el.find(".profiles-action-area").html(viewProfileTemplate(profileJSON));
+	},
+	sendMessage: function(ev) {
+		var messageData = $(ev.currentTarget).serializeObject();
+		var other_username = messageData.other_username;
+		var message = messageData.message;
+		var sendMessage = new this.options.SendMessage();
+		var view = this;
+		sendMessage.save({other_username: other_username, message: message}, {
+			dataType:"text",
+			success: function() {
+				view.$el.find(".message-textarea").val("");
+			}
+		});
+		return false;
 	},
 	addUserToFavorites: function(ev) {
 		var addUserToFavoritesData = $(ev.currentTarget).serializeObject();

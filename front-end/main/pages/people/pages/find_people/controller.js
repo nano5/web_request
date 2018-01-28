@@ -8,7 +8,8 @@ Controller.prototype.findPeople = function() {
 	findPeople.render({
 		Profiles: model.default.Profiles,
 		FavoriteUser: model.default.FavoriteUser,
-		Categories: model.default.Categories});
+		Categories: model.default.Categories,
+		SendMessage: model.default.SendMessage});
 }
 
 var _controller = new Controller();
